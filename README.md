@@ -1,3 +1,6 @@
+# IntelliChirp Capstone Tech Demo
+### Created by Steven Enriquez, Joshua Kruse, Michael Ewers, and Zhenyu Lei.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
