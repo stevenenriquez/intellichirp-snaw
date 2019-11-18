@@ -1,11 +1,16 @@
-import flask
+from flask import Flask, render_template
 
-app = flask.Flask(__name__)
+app = Flask(__name__, static_folder="../snaw-frontend/build", template_folder="../snaw-frontend/public")
 app.config["DEBUG"] = True
 
 
 @app.route('/', methods=['GET'])
 def home():
-    return "<h1>Soundscape Noise Analysis Workbench</h1>"
+    return render_template('index.html')
 
+@app.route("/hello")
+def hello():
+    return "hello"
+
+print('Starting Flask!')
 app.run()
