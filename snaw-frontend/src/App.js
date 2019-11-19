@@ -1,7 +1,6 @@
 import React from 'react';
-import logo from './logo.svg';
+import logo from './img/logo_small.png';
 import './App.css';
-import Button from '@material-ui/core/Button';
 import AnalyzeButton from './components/AnalyzeButton';
 import UploadButton from './components/UploadButton';
 
