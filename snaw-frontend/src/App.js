@@ -1,6 +1,9 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Button from '@material-ui/core/Button';
+import AnalyzeButton from './components/AnalyzeButton';
+import UploadButton from './components/UploadButton';
 
 function App() {
   return (
@@ -10,15 +13,14 @@ function App() {
         <p>
           <b>Soundscape Noise Analysis Workbench</b>
         </p>
+        <br/>
         <div> 
-          <p>
-            Drag and drop files here, or click to select files
-          </p>
+          Drag and drop WAV files here, or click the Upload button to select file/s.
+          <UploadButton/>
+          <br/><br/>
         </div>
         <div> 
-          <p>
-            Analyze
-          </p>
+          <AnalyzeButton/>
         </div>
       </header>
     </div>
