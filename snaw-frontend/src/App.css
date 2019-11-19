@@ -6,6 +6,10 @@
   height: 40vmin;
 }
 
+.Results-logo {
+  height: 80vmin;
+}
+
 .App-header {
   background-color: #ffffff;
   min-height: 100vh;
