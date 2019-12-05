@@ -27,8 +27,17 @@
     <title>Soundscape Noise Analysis Workbench</title>
 
     <!-- Window.token will hold the message passed by the Flask back-end -->
-    <script>window.token = "{{message}}"
-            window.array = "{{array}}"
+
+
+    <!--
+      -- This script specifically receives information from Flask.
+      -- receiving a the message string variable, and an array variable
+      -->
+    <script>
+
+    window.token = "{{message}}"
+
+    window.array = {{array}}
     </script>
 
   </head>
