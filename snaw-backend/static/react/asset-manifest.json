@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/static/react/css/main.0f949a12.chunk.css",
-    "main.js": "/static/react/js/main.450e9998.chunk.js",
-    "main.js.map": "/static/react/js/main.450e9998.chunk.js.map",
+    "main.js": "/static/react/js/main.293222f7.chunk.js",
+    "main.js.map": "/static/react/js/main.293222f7.chunk.js.map",
     "runtime-main.js": "/static/react/js/runtime-main.14a87568.js",
     "runtime-main.js.map": "/static/react/js/runtime-main.14a87568.js.map",
     "js/2.36186d4b.chunk.js": "/static/react/js/2.36186d4b.chunk.js",
@@ -14,13 +14,13 @@
     "media/SmallClassifyRainforest.png": "/static/react/media/SmallClassifyRainforest.14444155.png",
     "media/logo_small.png": "/static/react/media/logo_small.7e1954b4.png",
     "media/rainforest_specto.png": "/static/react/media/rainforest_specto.17942d01.png",
-    "precache-manifest.acb783a9890f513a9a5c116c2e145224.js": "/static/react/precache-manifest.acb783a9890f513a9a5c116c2e145224.js",
+    "precache-manifest.50cb3199c392c2a4839b1cb81483ba81.js": "/static/react/precache-manifest.50cb3199c392c2a4839b1cb81483ba81.js",
     "service-worker.js": "/static/react/service-worker.js"
   },
   "entrypoints": [
     "js/runtime-main.14a87568.js",
     "js/2.36186d4b.chunk.js",
     "css/main.0f949a12.chunk.css",
-    "js/main.450e9998.chunk.js"
+    "js/main.293222f7.chunk.js"
   ]
 }
