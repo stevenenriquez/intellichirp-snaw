@@ -15,18 +15,12 @@ import CardMedia from '@material-ui/core/CardMedia';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Paper from '@material-ui/core/Paper';
-import ReactDOM from "react-dom";
-import Chart from "./Charts";
-import PieChart from "./Charts/PieChart";
-import LineChart from "./Charts/LineChart";
-import Grid from '@material-ui/core/Grid';
-import BasicTable from './components/table';
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
   },
-    heading: {
+  heading: {
     fontSize: theme.typography.pxToRem(15),
     flexBasis: '33.33%',
     flexShrink: 0,
@@ -36,7 +30,6 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.secondary,
   },
 }));
-
 
 function Results() {
 const classes = useStyles();
@@ -53,39 +46,12 @@ return (
             <Typography variant='h6' className={classes.title}>Soundscape Noise Analysis Workbench</Typography>
         </Toolbar>
     </AppBar>
+
     <Container>
         <br/>
         <Typography variant="h3" component="h1">Results of Analysis</Typography>
         <br/>
         <Container fixed>
-            <ExpansionPanel expanded={expanded === 'panel0'} onChange={handleChange('panel0')}>
-                <ExpansionPanelSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1bh-content"
-                    id="panel1bh-header">
-                    <Typography className={classes.heading}>Results of</Typography>
-                    <Typography className={classes.secondaryHeading}>rainforest-sc.wav</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    <Container>
-                        <Paper>
-                            <Typography variant='subtitle1'>Spectrogram</Typography>
-                            <CardMedia component='img' image={Spectrogram} className="classes.media"/>
-                        </Paper>
-                        <br/>
-                        <Grid container spacing={2}>
-                            <Grid item linechart>
-                                <Paper><LineChart/></Paper>
-                            </Grid>
-                            <Grid item piechart>
-                                <Paper><PieChart/></Paper>
-                            </Grid>
-                        </Grid>
-                        <br/>
-                        <BasicTable/>
-                    </Container>
-                </ExpansionPanelDetails>
-                </ExpansionPanel>
             <ExpansionPanel expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
                 <ExpansionPanelSummary
                     expandIcon={<ExpandMoreIcon />}

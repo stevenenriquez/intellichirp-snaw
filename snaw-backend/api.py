@@ -1,5 +1,7 @@
 from flask import Flask, render_template
-
+import os
+import sys
+import subprocess
 app = Flask("__main__")
 app.config["DEBUG"] = True
 
@@ -19,6 +21,12 @@ def home():
 #this is an example of how the uploading process may happen. More research required.
 @app.route("/uploadFile", methods=['POST'])
 def upload():
+    return
+
+@app.route("/results")
+def analyze():
+    analysisOutput = subprocess.check_output([sys.executable, "CityNet/demo.py", "forest_path126.wav"])
+    print(analysisOutput)
     return
 
 print('Starting Flask!')
