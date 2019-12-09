@@ -12,18 +12,20 @@ app.config["DEBUG"] = True
 
 @app.route('/')
 def home():
-    stringMessage =  "Hello from Flask :)"
-    arrayOfNums = [1, 2, 3, 4, 5]
 
     spectroImg = runScript()
-    analysisImg = runFunction()
 
-    return render_template("index.html", message = stringMessage, array = arrayOfNums, spectroImg = spectroImg, analysisImg =  analysisImg)
+    return render_template("index.html", spectroImg = spectroImg)
 
 #this is an example of how the uploading process may happen. More research required.
 @app.route("/uploadFile", methods=['POST'])
 def upload():
     return
+
+@app.route("/citynet")
+def runCityNet():
+    analysisImg = runFunction()
+    return render_template("index.html", analysisImg = analysisImg)
 
 @app.route("/results")
 def analyze():
@@ -34,6 +36,13 @@ def analyze():
     try:
         return send_file('CityNet/demo/predictions.pdf',
                          attachment_filename='predictions.pdf')
+    except Exception as e:
+        return str(e)
+
+@app.route("/results/spectro")
+def get_spectro():
+    try:
+        return runScript()
     except Exception as e:
         return str(e)
 

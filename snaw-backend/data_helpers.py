@@ -40,7 +40,7 @@ def load_annotations(fname, labels_dir=labels_dir, wav_dir=wav_dir):
         pd_annots = pd.read_csv(csv_fname)
     else:
         pd_annots = pd.DataFrame()
-        print "Warning - no annotations found for %s" % fname
+        print("Warning - no annotations found for %s" % fname)
 
     # where we'll temp store the blank snippets for this file
     blank_snippets = []

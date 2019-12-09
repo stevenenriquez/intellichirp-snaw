@@ -15,8 +15,6 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>Token received from Backend = {window.token}</p>
-        <p>Test information array [1, 2, 3, 4, 5]  at position {randomNum} = {window.array[randomNum]}</p>
         <p> Spectrogram: </p>
         <p> <img src={spectroImg.src}/></p>
         <p> CityNet Analysis </p>

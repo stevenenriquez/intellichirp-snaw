@@ -15,6 +15,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Paper from '@material-ui/core/Paper';
+import $ from 'jquery';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,6 +32,19 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+function get_spectro(){
+    $.ajax({
+        url: '/results/spectro',
+        type: "GET",
+        success: function(response){
+        console.log(response);
+        },
+        error: function(error){
+        console.log(error);
+        }
+    })
+}
+
 function Results() {
 const classes = useStyles();
 const [expanded, setExpanded] = React.useState(false);
@@ -38,6 +52,9 @@ const [expanded, setExpanded] = React.useState(false);
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+  var spectroImg = new Image();
+  spectroImg.src = 'data:image/png;base64,'+window.spectroImg;
+  get_spectro();
 
 return (
 <div className="App">
@@ -64,7 +81,7 @@ return (
                     <Container>
                     <Paper>
                         <Typography variant='subtitle1'>Spectrogram</Typography>
-                        <CardMedia component='img' image={Spectrogram} className="classes.media" alt="svmSmallResults" />
+                        <CardMedia component='img' image={spectroImg.src} className="classes.media" alt="svmSmallResults" />
                     </Paper>
                     <br/>
                     <Paper>
