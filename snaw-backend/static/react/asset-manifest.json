@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/static/react/css/main.d70bb294.chunk.css",
-    "main.js": "/static/react/js/main.6fbe9fae.chunk.js",
-    "main.js.map": "/static/react/js/main.6fbe9fae.chunk.js.map",
+    "main.js": "/static/react/js/main.6a56f193.chunk.js",
+    "main.js.map": "/static/react/js/main.6a56f193.chunk.js.map",
     "runtime-main.js": "/static/react/js/runtime-main.14a87568.js",
     "runtime-main.js.map": "/static/react/js/runtime-main.14a87568.js.map",
-    "js/2.602a6846.chunk.js": "/static/react/js/2.602a6846.chunk.js",
-    "js/2.602a6846.chunk.js.map": "/static/react/js/2.602a6846.chunk.js.map",
+    "js/2.82b0407c.chunk.js": "/static/react/js/2.82b0407c.chunk.js",
+    "js/2.82b0407c.chunk.js.map": "/static/react/js/2.82b0407c.chunk.js.map",
     "../../templates/index.html": "/static/react/../../templates/index.html",
     "css/main.d70bb294.chunk.css.map": "/static/react/css/main.d70bb294.chunk.css.map",
     "media/AnthroClassifyRainforest.png": "/static/react/media/AnthroClassifyRainforest.1f13aa3f.png",
@@ -14,13 +14,13 @@
     "media/SmallClassifyRainforest.png": "/static/react/media/SmallClassifyRainforest.14444155.png",
     "media/logo_small.png": "/static/react/media/logo_small.7e1954b4.png",
     "media/rainforest_specto.png": "/static/react/media/rainforest_specto.17942d01.png",
-    "precache-manifest.98889ac183c61a0aad57fc0a1af952ec.js": "/static/react/precache-manifest.98889ac183c61a0aad57fc0a1af952ec.js",
+    "precache-manifest.7743e5a8eaadd8a5527d81446c734ef4.js": "/static/react/precache-manifest.7743e5a8eaadd8a5527d81446c734ef4.js",
     "service-worker.js": "/static/react/service-worker.js"
   },
   "entrypoints": [
     "js/runtime-main.14a87568.js",
-    "js/2.602a6846.chunk.js",
+    "js/2.82b0407c.chunk.js",
     "css/main.d70bb294.chunk.css",
-    "js/main.6fbe9fae.chunk.js"
+    "js/main.6a56f193.chunk.js"
   ]
 }

@@ -3,7 +3,7 @@ import sys
 import yaml
 import numpy as np
 from time import time
-import cPickle as pickle
+import pickle
 from easydict import EasyDict as edict
 
 import librosa

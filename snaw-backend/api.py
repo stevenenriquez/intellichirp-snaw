@@ -2,14 +2,15 @@ from flask import Flask, render_template, send_file
 import os
 import sys
 import subprocess
-from get_spectrogram import runScript
+from get_spectrogram import runScript as get_spectrogram
+from classification import runScript as get_classification
 app = Flask("__main__")
 app.config["DEBUG"] = True
 
 @app.route('/')
 def home():
 
-    spectroImg = runScript()
+    spectroImg = get_spectrogram()
 
     return render_template("index.html", spectroImg = spectroImg)
 
@@ -30,10 +31,18 @@ def analyze():
     except Exception as e:
         return str(e)
 
+@app.route("/results/classification")
+def classify():
+    try:
+        print("hello????")
+        return get_classification()
+    except Exception as e:
+        return str(e)
+
 @app.route("/results/spectro")
 def get_spectro():
     try:
-        return runScript()
+        return get_spectrogram()
     except Exception as e:
         return str(e)
 
