@@ -36,16 +36,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function get_specto(){
-    var your_param = "abc";
+function get_spectro(){
     $.ajax({
-        url: '/results',
-        type: 'GET',
-        success: function (response) {
-            console.log(response);
+        url: '/results/spectro',
+        type: "GET",
+        success: function(response){
+        console.log(response);
         },
-        error: function (error) {
-            console.log(error);
+        error: function(error){
+        console.log(error);
         }
     })
 }
@@ -57,8 +56,9 @@ const [expanded, setExpanded] = React.useState(false);
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-
-  get_specto();
+  var spectroImg = new Image();
+  spectroImg.src = 'data:image/png;base64,'+window.spectroImg;
+  get_spectro();
 
 return (
 <div className="App">
