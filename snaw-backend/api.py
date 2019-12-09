@@ -25,9 +25,9 @@ def upload():
 
 @app.route("/results")
 def analyze():
-    analysisOutput = subprocess.check_output([sys.executable, "CityNet/demo.py", "forest_path126.wav"])
+    analysisOutput = "helloooo did you get here?? "
     print(analysisOutput)
-    return
+    return analysisOutput
 
 print('Starting Flask!')
 app.run()

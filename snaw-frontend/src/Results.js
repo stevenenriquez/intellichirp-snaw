@@ -19,7 +19,7 @@ import LineChart from './Charts/LineChart';
 import PieChart from './Charts/PieChart';
 import SimpleTable from "./components/table";
 import Grid from '@material-ui/core/Grid';
-import VictoryChart from "./Charts/VictoryChart";
+import $ from 'jquery';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -36,6 +36,20 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+function get_specto(){
+    var your_param = "abc";
+    $.ajax({
+        url: '/results',
+        type: 'GET',
+        success: function (response) {
+            console.log(response);
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    })
+}
+
 function Results() {
 const classes = useStyles();
 const [expanded, setExpanded] = React.useState(false);
@@ -43,6 +57,8 @@ const [expanded, setExpanded] = React.useState(false);
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+
+  get_specto();
 
 return (
 <div className="App">
@@ -67,9 +83,6 @@ return (
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <Container>
-                        <Paper>
-                            <VictoryChart/>
-                        </Paper>
                         <Paper>
                             <Typography variant='subtitle1'>Spectrogram</Typography>
                             <CardMedia component='img' image={Spectrogram} className="classes.media"/>
