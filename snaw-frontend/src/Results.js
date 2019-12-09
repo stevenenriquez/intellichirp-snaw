@@ -37,16 +37,20 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function get_spectro(){
+    var result;
     $.ajax({
         url: '/results/spectro',
         type: "GET",
+        async: false,
         success: function(response){
         console.log(response);
+        result = response;
         },
         error: function(error){
         console.log(error);
-        }
-    })
+        },
+    });
+    return result;
 }
 
 function Results() {
@@ -57,8 +61,7 @@ const [expanded, setExpanded] = React.useState(false);
     setExpanded(isExpanded ? panel : false);
   };
   var spectroImg = new Image();
-  spectroImg.src = 'data:image/png;base64,'+window.spectroImg;
-  get_spectro();
+  spectroImg.src = 'data:image/png;base64,' + get_spectro();
 
 return (
 <div className="App">
@@ -85,7 +88,7 @@ return (
                     <Container>
                         <Paper>
                             <Typography variant='subtitle1'>Spectrogram</Typography>
-                            <CardMedia component='img' image={Spectrogram} className="classes.media"/>
+                            <CardMedia id="spectrogram" component='img' image={spectroImg.src} className="classes.media"/>
                         </Paper>
                         <br/>
                         <Typography variant='subtitle1'>Results of SVM Small Class</Typography>

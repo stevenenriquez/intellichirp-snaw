@@ -2,13 +2,9 @@ from flask import Flask, render_template, send_file
 import os
 import sys
 import subprocess
-from CityNet.demo import runFunction
 from get_spectrogram import runScript
 app = Flask("__main__")
 app.config["DEBUG"] = True
-
-
-
 
 @app.route('/')
 def home():
@@ -21,11 +17,6 @@ def home():
 @app.route("/uploadFile", methods=['POST'])
 def upload():
     return
-
-@app.route("/citynet")
-def runCityNet():
-    analysisImg = runFunction()
-    return render_template("index.html", analysisImg = analysisImg)
 
 @app.route("/results")
 def analyze():
