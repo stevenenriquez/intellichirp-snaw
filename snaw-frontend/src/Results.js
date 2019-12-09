@@ -87,7 +87,7 @@ function downloadTxtFile(){
     const element = document.createElement("a");
     const file = new Blob([classification], {type: 'text/plain'});
     element.href = URL.createObjectURL(file);
-    element.download = "myFile.txt";
+    element.download = "classification_results.txt";
     document.body.appendChild(element); // Required for this to work in FireFox
     element.click();
 }

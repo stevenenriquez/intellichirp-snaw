@@ -3,8 +3,10 @@ import axios from 'axios';
 import logo from './img/logo_small.png';
 import './App.css';
 import AnalyzeButton from './components/AnalyzeButton';
-import UploadButton from './components/UploadButton';
 import ApplicationBar from "./components/ApplicationBar";
+import Input from "@material-ui/core/Input";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Button from "@material-ui/core/Button";
 
 class App extends React.Component {
 
@@ -13,16 +15,11 @@ class App extends React.Component {
     this.state = {selectedFile: []}
   }
 
-  var spectroImg = new Image();
-  var analysisImg = new Image();
-  spectroImg.src = 'data:image/png;base64,'+window.spectroImg;
-  analysisImg.src = 'data:image/png;base64,'+window.analysisImg;
-
   fileSelectedHandler = event => {
-    event.preventDefault()
+    event.preventDefault();
     let file = event.target.files[-1];
-    this.state.selectedFile.push(file)
-  }
+    this.state.selectedFile.push(file);
+  };
 
   fileUploadHandler = () => {
     const fData = new FormData();
@@ -36,31 +33,34 @@ class App extends React.Component {
     })
         .then(response => console.log(response))
         .catch(err => console.log(err));
-  }
+  };
 
   render() {
+
     return (
       <div className="App">
         <ApplicationBar/>
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          <img src={logo} className="App-logo" alt="logo"/>
           <p>
             <b>Soundscape Noise Analysis Workbench</b>
           </p>
           <br/>
-          <form action="http://127.0.0.1:5000/upload" method="post">
-            <div>
-              Drag and drop WAV files here, or click the Upload button to select file/s. <br/>
-              {/* Choose file/s */}
-              <input type="file" accept="audio/wav" onChange={this.fileSelectedHandler} />
-              {/* Upload file/s */}
-              <button onClick={this.fileUploadHandler}>Upload</button>
-              <br/><br/>
-            </div>
+          <form action="http://localhost:5000/uploader" method="POST"
+                encType="multipart/form-data">
+            {/*<InputLabel htmlFor="my-input">Upload File</InputLabel>*/}
+            <label htmlFor='my-input'><Button variant="outlined" color='#3f5a14' component='span'>Upload Audio
+              File</Button></label>
+            <Input id="my-input" aria-describedby="my-helper-text" type='file' name='file' style={{display: 'none'}}/>
+            <FormHelperText id="my-helper-text">Drag and drop WAV files here, or click the Upload button to select
+              file/s.</FormHelperText>
+
+            <label htmlFor='my-submit'><Button variant="contained" backgroundColor='#3f5a14'
+                                               component='span'>Submit</Button></label>
+            <Input id='my-submit' type='submit' style={{display: 'none'}}/>
           </form>
-          <div>
-            <AnalyzeButton/>
-          </div>
+          <br/>
+          <AnalyzeButton/>
         </header>
       </div>
     );

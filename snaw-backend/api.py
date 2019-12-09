@@ -8,12 +8,11 @@ import subprocess
 from get_spectrogram import runScript as get_spectrogram
 from classification import runScript as get_classification
 
-UPLOAD_FOLDER = 'C:/Users/Steven/Documents/dev/IntelliChirp/intellichirp-snaw/snaw-backend/upload'
+UPLOAD_FOLDER = 'upload'
 ALLOWED_EXTENSIONS = {'wav'}
 
 app = Flask("__main__")
 app.config["DEBUG"] = True
-
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = 'secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -29,6 +28,14 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@app.route('/uploader', methods = ['GET', 'POST'])
+def upload_file():
+   if request.method == 'POST':
+      f = request.files['file']
+      filename = secure_filename(f.filename)
+      f.save(os.path.join(UPLOAD_FOLDER, filename))
+      return redirect('http://127.0.0.1:5000')
+
 #this is an example of how the uploading process may happen. More research required.
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
@@ -36,16 +43,21 @@ def upload():
         # check if the post request has the file part
         if 'file' not in request.files:
             flash('No file part')
+            print('[!!!!!!] No file part')
             return redirect(request.url)
         file = request.files['file']
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
             flash('No selected file')
+            print('[!!!!!!] No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
+            print( '[!!!!!!!!!!!]' + app.config['UPLOAD_FOLDER'] )
+            print( '[!!!!!!!!!!!!!]' + app.instance_path )
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            file.save(os.path.join(app.instance_path, UPLOAD_FOLDER, filename))
             return redirect('http://127.0.0.1:5000')
     return redirect('http://127.0.0.1:5000')
 

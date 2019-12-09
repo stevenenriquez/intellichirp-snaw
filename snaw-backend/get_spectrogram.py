@@ -92,6 +92,13 @@ def runScript():
     for filename in os.listdir('audio'):
         audiofile = "audio/" + filename
 
+    try:
+        for filename in os.listdir('upload'):
+            audiofile = "upload/" + filename
+    except:
+        print('[FAILURE] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
+
+
     path= "spectrogram/SpectroedImage"
     print(audiofile)
     print(path)
