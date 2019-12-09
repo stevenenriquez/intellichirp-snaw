@@ -36,8 +36,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+var specto_load = false;
 function get_spectro(){
     var result;
+    if(specto_load) return;
     $.ajax({
         url: '/results/spectro',
         type: "GET",
@@ -50,21 +52,34 @@ function get_spectro(){
         console.log(error);
         },
     });
+    specto_load = true;
     return result;
 }
 
+var class_load = false;
 function get_class(){
+    var result;
+    if(class_load) return;
+
     $.ajax({
         url: '/results/classification',
         type: 'GET',
+        async: false,
         success: function(response){
             console.log(response);
+            result = response;
         },
         error: function(error){
             console.log(error);
         },
     });
+    class_load = true;
+    return result
 }
+
+var spectroImg = new Image();
+spectroImg.src = 'data:image/png;base64,' + get_spectro();
+var classification = get_class();
 
 function Results() {
 const classes = useStyles();
@@ -73,9 +88,6 @@ const [expanded, setExpanded] = React.useState(false);
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-  var spectroImg = new Image();
-  spectroImg.src = 'data:image/png;base64,' + get_spectro();
-  get_class();
 
 return (
 <div className="App">
@@ -84,7 +96,6 @@ return (
             <Typography variant='h6' className={classes.title}>Soundscape Noise Analysis Workbench</Typography>
         </Toolbar>
     </AppBar>
-
     <Container>
         <br/>
         <Typography variant="h3" component="h1">Results of Analysis</Typography>

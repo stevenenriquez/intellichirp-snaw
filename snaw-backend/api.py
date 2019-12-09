@@ -1,9 +1,10 @@
-from flask import Flask, render_template, send_file
+from flask import Flask, render_template, send_file, jsonify
 import os
 import sys
 import subprocess
 from get_spectrogram import runScript as get_spectrogram
 from classification import runScript as get_classification
+
 app = Flask("__main__")
 app.config["DEBUG"] = True
 
@@ -34,8 +35,9 @@ def analyze():
 @app.route("/results/classification")
 def classify():
     try:
-        print("hello????")
-        return get_classification()
+        result = get_classification()
+        # print(result)
+        return jsonify(result).data
     except Exception as e:
         return str(e)
 
