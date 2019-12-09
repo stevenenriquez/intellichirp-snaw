@@ -20,6 +20,7 @@ import PieChart from './Charts/PieChart';
 import SimpleTable from "./components/table";
 import Grid from '@material-ui/core/Grid';
 import $ from 'jquery';
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -34,6 +35,17 @@ const useStyles = makeStyles(theme => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
+    button: {
+        color: 'white',
+        fontSize: '1em',
+        backgroundColor: '#3f5a14',
+        margin: theme.spacing(1),
+        paddingLeft: theme.spacing(4),
+        paddingRight: theme.spacing(4),
+        '&:hover': {
+            background: '#2e420e',
+        },
+    },
 }));
 
 var specto_load = false;
@@ -75,6 +87,15 @@ function get_class(){
     });
     class_load = true;
     return result
+}
+
+function downloadTxtFile(){
+    const element = document.createElement("a");
+    const file = new Blob([classification], {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = "myFile.txt";
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
 }
 
 var spectroImg = new Image();
@@ -128,6 +149,10 @@ return (
                         </Grid>
                         <br/>
                         <SimpleTable/>
+                        <br/>
+                        <Paper>
+                            <Button onClick={function(){downloadTxtFile()}} variant="contained" className={classes.button}>Export Classification</Button>
+                        </Paper>
                     </Container>
                 </ExpansionPanelDetails>
             </ExpansionPanel>
