@@ -94,8 +94,8 @@ def runScript():
         audiofile = "audio/" + filename
 
     try:
-        for filename in os.listdir('upload'):
-            audiofile = "upload/" + filename
+        for filename in os.listdir('instance/upload'):
+            audiofile = "instance/upload/" + filename
     except:
         print('[FAILURE] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
 
