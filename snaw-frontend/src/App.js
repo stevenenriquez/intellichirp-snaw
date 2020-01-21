@@ -26,6 +26,7 @@ class App extends React.Component {
     fData.append('file', this.state.selectedFile[-1]);
     fData.append('filename', this.state.selectedFile[-1].name);
     console.log(fData);
+    // axios api call to upload the selected file
     axios({
       method: 'post',
       url: 'http://126.0.0.1:5000/upload',
