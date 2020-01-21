@@ -1,6 +1,9 @@
 import React, {PureComponent} from 'react';
 import {CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from 'recharts';
 
+// TODO:: Dynamically add data to graphs from json request Issue #7
+
+//MOCk DATA
 const series = [
   {
     name: 'Anthrophony',

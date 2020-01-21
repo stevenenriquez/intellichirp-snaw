@@ -89,6 +89,7 @@ def plotstft(audiopath, binsize=2**10, plotpath=None, colormap="jet"):
     return ims
 
 def runScript():
+    # Checks is a file was uploaded corrently, if not program runs on default audio file
     for filename in os.listdir('audio'):
         audiofile = "audio/" + filename
 
@@ -98,7 +99,7 @@ def runScript():
     except:
         print('[FAILURE] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
 
-
+    # Creates and returns path of created spectrogram file
     path= "spectrogram/SpectroedImage"
     print(audiofile)
     print(path)

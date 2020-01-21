@@ -17,10 +17,15 @@ const useStyles = makeStyles({
   },
 });
 
+/* TODO:: Finish displaying every type of data needed for the user Issue #15
+   TODO:: Dynamically add rows and data from classification results and acoustic indices results Issue #16
+*/
+
 function createData(class_name, seconds, percentage) {
   return { class_name, seconds, percentage };
 }
 
+// MOCK DATA
 const rows = [
   createData('Geophony', 14, 45),
   createData('Biophony', 12, 45),
@@ -41,6 +46,8 @@ export default function SimpleTable() {
       </TableRow>
         </TableHead>
         <TableBody>
+          {/* map function on rows list,
+              for each row create a result in the table */}
           {rows.map(row => (
             <TableRow key={row.class_name}>
               <TableCell component="th" scope="row">

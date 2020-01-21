@@ -42,6 +42,14 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+/* Func: get_spectro()
+   When the function is called, an ajax call is made to /results/spectro
+   flask function returns a file location of a created spectrogram file based on audio file uploaded
+   TODO:: Allow spectorgrams to be created for multiple files Issue #10
+   spectro_load set to true, allows function to only be loaded on results.js creation, not update
+        TODO:: Results.js is initialized multiple times, get_spectro() in turn is ran more than once Issue #11
+   ajax response is returned to the function
+*/
 var specto_load = false;
 function get_spectro(){
     var result = '';
@@ -62,6 +70,15 @@ function get_spectro(){
     return result;
 }
 
+/* Func: get_class()
+   When the function is called, an ajax call is made to /results/classification
+   flask function returns a JSON string featuring a dictionary of time stamps and classification
+       based on the audio file uploaded
+   TODO:: Allow classifications to be created for multiple files Issue #9
+   spectro_load set to true, allows function to only be loaded on results.js creation, not update
+        TODO:: Results.js is initialized multiple times, get_spectro() in turn is ran more than once Issue #11
+   ajax response is returned to the function
+*/
 var class_load = false;
 function get_class(){
     var result = '';
@@ -83,6 +100,11 @@ function get_class(){
     return result
 }
 
+/* func: downloadTxtFile
+   creates a txt file with a classification result when export button is pressed
+   TODO:: Pretty print classification results in the returned export file Issue #13
+   TODO:: Save classification results to a csv. file Issue #14
+ */
 function downloadTxtFile(){
     const element = document.createElement("a");
     const file = new Blob([classification], {type: 'text/plain'});
@@ -92,8 +114,11 @@ function downloadTxtFile(){
     element.click();
 }
 
+// Creates spectrogram file location to be used by html
+// TODO:: Add spectrogram file location code to get_spectro() function Issue #14
 var spectroImg = new Image();
 spectroImg.src = 'data:image/png;base64,' + get_spectro();
+// Created classification file variable
 var classification = get_class();
 
 function Results() {

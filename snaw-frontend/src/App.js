@@ -52,8 +52,9 @@ class App extends React.Component {
             <label htmlFor='my-input'><Button variant="outlined" color='#3f5a14' component='span'>Upload Audio
               File</Button></label>
             <Input id="my-input" aria-describedby="my-helper-text" type='file' name='file' style={{display: 'none'}}/>
-            <FormHelperText id="my-helper-text">Drag and drop WAV files here, or click the Upload button to select
-              file/s.</FormHelperText>
+            <FormHelperText id="my-helper-text">
+                Drag and drop WAV files here, or click the Upload button to select file/s.
+            </FormHelperText>
 
             <label htmlFor='my-submit'><Button variant="contained" backgroundColor='#3f5a14'
                                                component='span'>Submit</Button></label>
