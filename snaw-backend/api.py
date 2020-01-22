@@ -8,7 +8,7 @@ import subprocess
 from get_spectrogram import runScript as get_spectrogram
 from classification import runScript as get_classification
 
-UPLOAD_FOLDER = 'upload'
+UPLOAD_FOLDER = 'instance/upload/'
 ALLOWED_EXTENSIONS = {'wav'}
 
 app = Flask("__main__")

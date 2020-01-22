@@ -2,6 +2,9 @@ import React, {PureComponent} from 'react';
 
 import {Cell, Legend, Pie, PieChart, Tooltip,} from 'recharts';
 
+// TODO:: Dynamically add data to graphs from json request Issue #7
+
+//MOCK DATA
 const data01 = [
   { name: 'Geophony', value: 0 },
   { name: 'Biophony', value: 34 },
@@ -9,6 +12,7 @@ const data01 = [
     { name: 'None', value: 68 }
 ];
 
+//MOCK DATA
 const series = [
     {
         name: 'Anthrophony',
