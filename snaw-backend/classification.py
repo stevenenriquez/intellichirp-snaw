@@ -39,8 +39,11 @@ def classify_file( audiofile, model, model_type, model_color ):
                      'color' : model_color,
                      'data' : []}
 
+    classify_dict['data'].append(  { "category" : "NO",
+                                             "time" : 0 } )
+
     for index in range(flag_len):
-        timestamp = segment * index # current timestamp
+        timestamp = segment * index + 1 # current timestamp
 
         # builds dictionary
         classify_dict['data'].append(  { "category" : classesAll[int(flagsInd[index])],

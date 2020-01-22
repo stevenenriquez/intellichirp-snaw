@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -120,6 +120,7 @@ var spectroImg = new Image();
 spectroImg.src = 'data:image/png;base64,' + get_spectro();
 // Created classification file variable
 var classification = get_class();
+var classificationObj = JSON.parse(classification);
 
 function Results() {
 const classes = useStyles();
@@ -158,14 +159,14 @@ return (
                         <br/>
                         <Grid container spacing={2}>
                             <Grid item linechart>
-                                <Paper><LineChart/></Paper>
+                                <Paper><LineChart series={classificationObj}/></Paper>
                             </Grid>
                             <Grid item piechart>
                                 <Paper><PieChart/></Paper>
                             </Grid>
                         </Grid>
                         <br/>
-                        <SimpleTable/>
+                        <SimpleTable testing={classificationObj}/>
                         <br/>
                         <Paper>
                             <Button onClick={function () {
@@ -196,14 +197,14 @@ return (
                         <br/>
                         <Grid container spacing={2}>
                             <Grid item linechart>
-                                <Paper><LineChart/></Paper>
+                                <Paper><LineChart series={classificationObj}/></Paper>
                             </Grid>
                             <Grid item piechart>
                                 <Paper><PieChart/></Paper>
                             </Grid>
                         </Grid>
                         <br/>
-                        <SimpleTable/>
+                        <SimpleTable testing={classificationObj}/>
                         <br/>
                         <Paper>
                             <Button onClick={function () {
