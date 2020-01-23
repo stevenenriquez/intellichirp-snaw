@@ -50,23 +50,45 @@ const useStyles = makeStyles(theme => ({
         TODO:: Results.js is initialized multiple times, get_spectro() in turn is ran more than once Issue #11
    ajax response is returned to the function
 */
-var specto_load = false;
+
+/* Function: fileInserted()
+ * Functionality:
+ * This function is in place to stop the page from constantly
+ * running the classification and spectrogram functions.
+ * It does so by checking if any files are actually present, if
+ * there are none, the functions will not run. Once those functions
+ * do run, the files are deleted.
+ */
+function fileInserted(){
+    var result = '';
+    $.ajax({
+        url: '/didUpload',
+        type: "GET",
+        async: false,
+        success: function(response){
+            console.log(response);
+            result = response;
+        },
+        error: function(error){
+            console.log(error);
+        },
+    });
+    return result;
+}
+
 function get_spectro(){
     var result = '';
-    if(specto_load) return;
     $.ajax({
         url: '/results/spectro',
         type: "GET",
         async: false,
         success: function(response){
-        console.log(response);
         result = response;
         },
         error: function(error){
         console.log(error);
         },
     });
-    specto_load = true;
     return result;
 }
 
@@ -79,11 +101,8 @@ function get_spectro(){
         TODO:: Results.js is initialized multiple times, get_spectro() in turn is ran more than once Issue #11
    ajax response is returned to the function
 */
-var class_load = false;
 function get_class(){
     var result = '';
-    if(class_load) return;
-
     $.ajax({
         url: '/results/classification',
         type: 'GET',
@@ -96,7 +115,6 @@ function get_class(){
             console.log(error);
         },
     });
-    class_load = true;
     return result
 }
 
@@ -114,15 +132,22 @@ function downloadTxtFile(){
     element.click();
 }
 
-// Creates spectrogram file location to be used by html
 // TODO:: Add spectrogram file location code to get_spectro() function Issue #14
-var spectroImg = get_spectro();
-if(typeof spectroImg != 'String') {
-    var multiFile = true;
-}
-var classification = get_class();
-// Created classification file variable
 
+/*
+ * Here we are checking the above function fileInserted,
+ * which will tell us if there are files present, if not
+ * the get_spectro and get_class will not run
+ *
+ */
+if(fileInserted() == "True") {
+    var spectroImg = get_spectro();
+    if (spectroImg.length > 1) {
+        var multiFile = true;
+    }
+    var classification = get_class();
+    // Created classification file variable
+}
 function Results() {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
@@ -236,13 +261,13 @@ function Results() {
                                 aria-controls="panel1bh-content"
                                 id="panel1bh-header">
                                 <Typography className={classes.heading}>Results of</Typography>
-                                <Typography className={classes.secondaryHeading}>nature_sc.wav</Typography>
+                                <Typography className={classes.secondaryHeading}>{spectroImg[0][0]}</Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
                                 <Container>
                                     <Paper>
                                         <Typography variant='subtitle1'>Spectrogram</Typography>
-                                        <CardMedia id="spectrogram" component='img' image={spectroImg.src}
+                                        <CardMedia id="spectrogram" component='img' image={spectroImg[0][1]}
                                                    className="classes.media"/>
                                     </Paper>
                                     <br/>
@@ -251,52 +276,14 @@ function Results() {
                                     <br/>
                                     <Grid container spacing={2}>
                                         <Grid item linechart>
-                                            <Paper><LineChart series={classification}/></Paper>
+                                            <Paper><LineChart series={classification[0]}/></Paper>
                                         </Grid>
                                         <Grid item piechart>
                                             <Paper><PieChart/></Paper>
                                         </Grid>
                                     </Grid>
                                     <br/>
-                                    <SimpleTable testing={classification}/>
-                                    <br/>
-                                    <Paper>
-                                        <Button onClick={function () {
-                                            downloadTxtFile()
-                                        }} variant="contained" className={classes.button}>Export SVM Classification</Button>
-                                    </Paper>
-                                </Container>
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                        <ExpansionPanel expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-                            <ExpansionPanelSummary
-                                expandIcon={<ExpandMoreIcon/>}
-                                aria-controls="panel1bh-content"
-                                id="panel1bh-header">
-                                <Typography className={classes.heading}>Results of</Typography>
-                                <Typography className={classes.secondaryHeading}>rainforest-sc.wav</Typography>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                                <Container>
-                                    <Paper>
-                                        <Typography variant='subtitle1'>Spectrogram</Typography>
-                                        <CardMedia id="spectrogram" component='img' image={spectroImg.src}
-                                                   className="classes.media"/>
-                                    </Paper>
-                                    <br/>
-                                    <Typography variant='subtitle1'>Results of SVM Anthrophony, Geophony, and Biophony Class
-                                        Models</Typography>
-                                    <br/>
-                                    <Grid container spacing={2}>
-                                        <Grid item linechart>
-                                            <Paper><LineChart series={classification}/></Paper>
-                                        </Grid>
-                                        <Grid item piechart>
-                                            <Paper><PieChart/></Paper>
-                                        </Grid>
-                                    </Grid>
-                                    <br/>
-                                    <SimpleTable testing={classification}/>
+                                    <SimpleTable testing={classification[0]}/>
                                     <br/>
                                     <Paper>
                                         <Button onClick={function () {
