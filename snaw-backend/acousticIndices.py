@@ -664,18 +664,18 @@ The above code is from the user "amogh3892" with repo "Acoustic-Indices." This s
 files is being treated as a library to be used by our product.
 
 '''
-def getAcousticIndices(fileOrDirectory, isDirectory = False):
+def getAcousticIndices(isMultipleFiles = False):
 
-        # determine whether a directory is used or not
-        if(isDirectory):
+        # determine whether multiple files are being analyzed or not
+        if(isMultipleFiles):
             # finalResultsArray will be used to store a list of the result dictionaries
             finalResultsArray = []
 
             # loop through the files in the directory
-            for file in os.listdir(fileOrDirectory):
+            for file in os.listdir("instance/upload/"):
 
-                # correct the file path with a prefixed folder 'Audio'
-                filePath = "Audio/" + file
+                # correct the file path with the prefixed upload folder
+                filePath = "instance/upload/" + file
                 data,fs  =  librosa.load(filePath,sr=None,offset=0,duration=60)
 
                 # mono channel
@@ -704,8 +704,13 @@ def getAcousticIndices(fileOrDirectory, isDirectory = False):
             return finalResultsArray
 
         else:
+            filename = "NULL"
+
+            for file in os.listdir("instance/upload/"):
+                filename = "instance/upload/"+file
+
             # considering one minute of the audio - the indices are taken 1 minute audio segments
-            data,fs  =  librosa.load(fileOrDirectory,sr=None,offset=0,duration=60)
+            data,fs  =  librosa.load(filename,sr=None,offset=0,duration=60)
 
             # mono channel
             data = AudioProcessing.convert_to_mono(data)
