@@ -33,6 +33,13 @@ def upload_file():
       f.save(os.path.join(UPLOAD_FOLDER, filename))
       return redirect('http://127.0.0.1:5000')
 
+@app.route('/didUpload', methods = ['GET'])
+def didFileUpload():
+    if(len(os.listdir('instance/upload/')) != 0):
+        return "True"
+    else:
+        return "False"
+
 @app.route("/results/classification")
 def classify():
     try:
@@ -41,7 +48,9 @@ def classify():
         else:
             result = get_classification()
 
-        print(result[0][2])
+        for file in os.listdir('instance/upload/'):
+            os.remove('instance/upload/'+file)
+
         return result
     except Exception as e:
         return str(e)
@@ -53,9 +62,6 @@ def get_spectro():
             result = get_spectrogram(True)
         else:
             result = get_spectrogram()
-
-        #for file in os.listdir("instance/upload/"):
-         #   os.remove("instance/upload/"+file)
 
         return result
     except Exception as e:

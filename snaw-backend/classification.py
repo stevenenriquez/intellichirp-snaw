@@ -70,19 +70,26 @@ def geo_model():
 
 # driver function
 def runScript(isMultipleFiles = False):
-    # Checks is a file was uploaded corrently, if not program runs on default audio file
-    # default file select
+
+    # Check if multiple files are being analyzed
     if(isMultipleFiles):
+        # Create dictionary for storing return information
+        # Create a counter for files
         finalResult = {}
         fileCount = 0
+
         try:
+            # Retrieve File
             for filename in os.listdir('instance/upload/'):
                 audiofile = "instance/upload/" + filename
+
+                # Create list to store information
                 result = []
                 result.append( classify_file( audiofile, anthro_model(), 'Anthrophony', '#0088FE' ) )
                 result.append( classify_file(audiofile, bio_model(), 'Biophony', '#00C49F' ) )
                 result.append( classify_file(audiofile, geo_model(), 'Geophony', '#FFBB28' ) )
 
+                # Add result list to finalResult dictionary with filecounter as the key
                 finalResult[fileCount] = result
                 fileCount += 1
 
@@ -93,16 +100,27 @@ def runScript(isMultipleFiles = False):
 
         return finalResult
 
-    # creates list of dictionaries, to be returned to the front-end
 
+    # If only one file is being analyzed
     else:
 
+    # Create dictonary to store return information
+    finalResult = {}
+
+    try:
+        # Retrieve File
         for filename in os.listdir('instance/upload/'):
             audiofile = "instance/upload/" + filename
 
+        # Create list to store information
         result = []
         result.append( classify_file( audiofile, anthro_model(), 'Anthrophony', '#0088FE' ) )
         result.append( classify_file(audiofile, bio_model(), 'Biophony', '#00C49F' ) )
         result.append( classify_file(audiofile, geo_model(), 'Geophony', '#FFBB28' ) )
 
-        return result
+        # Add result to finalResult as the singular item at key 0
+        finalResult[0] = result
+
+     except:
+                print('[FAILURE] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
+        return finalResult
