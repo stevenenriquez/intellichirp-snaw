@@ -152,6 +152,8 @@ if(fileInserted() == "True") {
     var classification = get_class();
 
 }
+
+
 function Results() {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
@@ -207,103 +209,7 @@ function Results() {
                             </Container>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
-                    <ExpansionPanel expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-                        <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon/>}
-                            aria-controls="panel1bh-content"
-                            id="panel1bh-header">
-                            <Typography className={classes.heading}>Results of</Typography>
-                            <Typography className={classes.secondaryHeading}>{spectroImg[1][0]}</Typography>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
-                            <Container>
-                                <Paper>
-                                    <Typography variant='subtitle1'>Spectrogram</Typography>
-                                    <CardMedia id="spectrogram" component='img' image={spectroImg[1][1]}
-                                               className="classes.media"/>
-                                </Paper>
-                                <br/>
-                                <Typography variant='subtitle1'>Results of SVM Anthrophony, Geophony, and Biophony Class
-                                    Models</Typography>
-                                <br/>
-                                <Grid container spacing={2}>
-                                    <Grid item linechart>
-                                        <Paper><LineChart series={classification[1]}/></Paper>
-                                    </Grid>
-                                    <Grid item piechart>
-                                        <Paper><PieChart series={classification[0]}/></Paper>
-                                    </Grid>
-                                </Grid>
-                                <br/>
-                                <SimpleTable testing={classification[1]}/>
-                                <br/>
-                                <Paper>
-                                    <Button onClick={function () {
-                                        downloadTxtFile()
-                                    }} variant="contained" className={classes.button}>Export SVM Classification</Button>
-                                </Paper>
-                            </Container>
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                </Container>
-            </Container>
-            </div>
         );
-    }
-    else{
-        return (
-            <div className="App">
-                <ApplicationBar/>
-                <Container>
-                    <br/>
-                    <Typography variant="h3" component="h1">Results of Analysis</Typography>
-                    <br/>
-                    <Container fixed>
-                        <ExpansionPanel expanded={expanded === 'panel0'} onChange={handleChange('panel0')}>
-                            <ExpansionPanelSummary
-                                expandIcon={<ExpandMoreIcon/>}
-                                aria-controls="panel1bh-content"
-                                id="panel1bh-header">
-                                <Typography className={classes.heading}>Results of</Typography>
-                                <Typography className={classes.secondaryHeading}>{spectroImg[0][0]}</Typography>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                                <Container>
-                                    <Paper>
-                                        <Typography variant='subtitle1'>Spectrogram</Typography>
-                                        <CardMedia id="spectrogram" component='img' image={spectroImg[0][1]}
-                                                   className="classes.media"/>
-                                    </Paper>
-                                    <br/>
-                                    <Typography variant='subtitle1'>Results of SVM Anthrophony, Geophony, and Biophony Class
-                                        Models</Typography>
-                                    <br/>
-                                    <Grid container spacing={2}>
-                                        <Grid item linechart>
-                                            <Paper><LineChart series={classification[0]}/></Paper>
-                                        </Grid>
-                                        <Grid item piechart>
-                                            <Paper><PieChart series={classification[0]}/></Paper>
-                                        </Grid>
-                                    </Grid>
-                                    <br/>
-                                    <SimpleTable testing={classification[0]}/>
-                                    <br/>
-                                    <Paper>
-                                        <Button onClick={function () {
-                                            downloadTxtFile()
-                                        }} variant="contained" className={classes.button}>Export SVM Classification</Button>
-                                    </Paper>
-                                </Container>
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                    </Container>
-                </Container>
-            </div>
-        );
-
-
-
     }
 }
 

@@ -664,84 +664,44 @@ The above code is from the user "amogh3892" with repo "Acoustic-Indices." This s
 files is being treated as a library to be used by our product.
 
 '''
-def getAcousticIndices(isMultipleFiles = False):
+def getAcousticIndices():
+    # fileDictionary will be used to store the filecount keys with their respective file information
+    fileDictionary = {}
 
-        # determine whether multiple files are being analyzed or not
-        if(isMultipleFiles):
-            # fileDictionary will be used to store the filecount keys with their respective file information
-            fileDictionary = {}
+    # Create file counter
+    fileCount = 0
 
-            # Create file counter
-            fileCount = 0
+    # loop through the files in the directory
+    for file in os.listdir("instance/upload/"):
 
-            # loop through the files in the directory
-            for file in os.listdir("instance/upload/"):
+        # correct the file path with the prefixed upload folder
+        filePath = "instance/upload/" + file
+        data,fs  =  librosa.load(filePath,sr=None,offset=0,duration=60)
 
-                # correct the file path with the prefixed upload folder
-                filePath = "instance/upload/" + file
-                data,fs  =  librosa.load(filePath,sr=None,offset=0,duration=60)
+        # mono channel
+        data = AudioProcessing.convert_to_mono(data)
 
-                # mono channel
-                data = AudioProcessing.convert_to_mono(data)
+        # changing sampling rate
+        new_fs = 17640
+        data_chunk = AudioProcessing.resample(data,fs,new_fs)
 
-                # changing sampling rate
-                new_fs = 17640
-                data_chunk = AudioProcessing.resample(data,fs,new_fs)
+        # extracting indices
+        acousticIndices = AcousticIndices(data_chunk,new_fs)
+        acoustic_indices = acousticIndices.get_acoustic_indices()
+        acoustic_headers = acousticIndices.get_acoustic_indices_headers()
 
-                # extracting indices
-                acousticIndices = AcousticIndices(data_chunk,new_fs)
-                acoustic_indices = acousticIndices.get_acoustic_indices()
-                acoustic_headers = acousticIndices.get_acoustic_indices_headers()
+        # singleResultArray is used to store the results of one file (List of dictionaries)
+        singleResultArray = []
 
-                # singleResultArray is used to store the results of one file (List of dictionaries)
-                singleResultArray = []
+        # Traverse the acoustic tags
+        for i in range(len(acoustic_headers)):
+            # per indices in the length of the acoustic tags,
+            # append dictionary items.
+            singleResultArray.append({"Index": acoustic_headers[i], "Other Name" : acoustic_indices[i]})
+        # append result dictionary to the final results array
+        fileDictionary[fileCount] = singleResultArray
+        fileCount += 1
 
-                # Traverse the acoustic tags
-                for i in range(len(acoustic_headers)):
-                    # per indices in the length of the acoustic tags,
-                    # append dictionary items.
-                    singleResultDictionary.append({acoustic_headers[i] : acoustic_indices[i]})
-                # append result dictionary to the final results array
-                fileDictionary[fileCount] = singleResultArray
-                fileCount += 1
-            return fileDictionary
-
-        else:
-            filename = "NULL"
-
-            for file in os.listdir("instance/upload/"):
-                filename = "instance/upload/"+file
-
-            # considering one minute of the audio - the indices are taken 1 minute audio segments
-            data,fs  =  librosa.load(filename,sr=None,offset=0,duration=60)
-
-            # mono channel
-            data = AudioProcessing.convert_to_mono(data)
-
-            # changing sampling rate
-            new_fs = 17640
-            data_chunk = AudioProcessing.resample(data,fs,new_fs)
-
-            # extracting indices
-            acousticIndices = AcousticIndices(data_chunk,new_fs)
-            acoustic_indices = acousticIndices.get_acoustic_indices()
-            acoustic_headers = acousticIndices.get_acoustic_indices_headers()
+    return fileDictionary
 
 
-            fileInformationArray = []
-
-            singleFileDictionary = {}
-
-            # Traverse the acoustic tags
-            for i in range(len(acoustic_headers)):
-                # per indices in the length of the acoustic tags,
-                # append dictionary items.
-                fileInformationArray.append({acoustic_headers[i] : acoustic_indices[i]})
-            singleFileDictionary[0] = fileInformationArray
-            # Most likely return the list of dictionaries
-            return singleFileDictionary
-
-
-
-
-#getAcousticIndices("Audio/bird.wav", False)

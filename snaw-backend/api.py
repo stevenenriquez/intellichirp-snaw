@@ -35,6 +35,11 @@ def upload_file():
 
 @app.route('/didUpload', methods = ['GET'])
 def didFileUpload():
+     # Create 'instance/upload/' folder if not present
+    if(os.path.isdir('instance/upload/') == False):
+        os.makedirs('instance/upload/')
+
+    # Check if upload folder contains any files
     if(len(os.listdir('instance/upload/')) != 0):
         return "True"
     else:
@@ -43,16 +48,13 @@ def didFileUpload():
 @app.route("/results/classification")
 def classify():
     try:
-        if(len(os.listdir("instance/upload")) > 1):
-            result = get_classification(True)
-        else:
-            result = get_classification()
+        result = get_classification()
 
-            testAcoustic = get_acoustic_indices()
-            print(testAcoustic)
+        testAcoustic = get_acoustic_indices()
+        print(testAcoustic)
 
-        for file in os.listdir('instance/upload/'):
-            os.remove('instance/upload/'+file)
+        #for file in os.listdir('instance/upload/'):
+         #   os.remove('instance/upload/'+file)
 
         return result
     except Exception as e:
@@ -61,11 +63,7 @@ def classify():
 @app.route("/results/spectro")
 def get_spectro():
     try:
-        if(len(os.listdir("instance/upload")) > 1):
-            result = get_spectrogram(True)
-        else:
-            result = get_spectrogram()
-
+        result = get_spectrogram()
         return result
     except Exception as e:
         return str(e)

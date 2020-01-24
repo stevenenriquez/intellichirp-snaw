@@ -88,58 +88,24 @@ def plotstft(audiopath, binsize=2**10, plotpath=None, colormap="jet"):
 
     return ims
 
-def runScript(isMultipleFiles = False):
-    # Check if multiple files are being analyzed
-    if(isMultipleFiles):
+def runScript():
 
-        # Create a dictionary for storying
-        # And a counter for the files
-        listOfImages = {}
-        fileCount = 0
-        try:
-            # Retrieve file
-            for filename in os.listdir('instance/upload/'):
-                audiofile = "instance/upload/" + filename
-
-                # Correct Path
-                path= "spectrogram/SpectroedImage"+ str(fileCount)
-
-                # Run spectrogram plotting
-                ims = plotstft(audiofile, plotpath=path)
-
-                # Convert spectrograms into a base64 string to be sent to front end
-                with open(path + ".png", "rb") as spect_image:
-                    encode = base64.b64encode(spect_image.read())
-                    # Add file number as key and file name and data as values
-                    listOfImages[fileCount] = [filename, 'data:image/png;base64,' + encode.decode("utf-8")]
-
-                fileCount += 1
-
-            # remove all spectrogram pictures from storage
-            for file in os.listdir("spectrogram/"):
-                os.remove("spectrogram/"+file)
-
-        except:
-                print('[FAILURE -- Spectrogram 1] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
-
-        return listOfImages
-
-    # If only one image is being analyzed
-    else:
-        # Dictionary for storing return information
-        singleImage = {}
-
-        try:
-            # Retrieve file
-            for filename in os.listdir('instance/upload/'):
-                 audiofile = "instance/upload/" + filename
-
-            if (os.path.isdir('Spectrogram/') == False):
-                os.mkdir('Spectrogram/')
+    # If spectrogram folder has not been created.
+    if (os.path.isdir('Spectrogram/') == False):
+        os.mkdir('Spectrogram/')
 
 
-            # Creates and returns path of created spectrogram file
-            path= "Spectrogram/SpectroedImage"
+    # Create a dictionary for storying
+    # And a counter for the files
+    listOfImages = {}
+    fileCount = 0
+    try:
+        # Retrieve file
+        for filename in os.listdir('instance/upload/'):
+            audiofile = "instance/upload/" + filename
+
+            # Correct Path
+            path= "spectrogram/SpectroedImage"+ str(fileCount)
 
             # Run spectrogram plotting
             ims = plotstft(audiofile, plotpath=path)
@@ -147,14 +113,16 @@ def runScript(isMultipleFiles = False):
             # Convert spectrograms into a base64 string to be sent to front end
             with open(path + ".png", "rb") as spect_image:
                 encode = base64.b64encode(spect_image.read())
+                # Add file number as key and file name and data as values
+                listOfImages[fileCount] = [filename, 'data:image/png;base64,' + encode.decode("utf-8")]
 
-            singleImage[0] = [filename, 'data:image/png;base64,' + encode.decode("utf-8")]
+            fileCount += 1
 
-            # remove all spectrogram pictures from storage
-            for file in os.listdir("Spectrogram/"):
-                os.remove("Spectrogram/"+file)
+        # remove all spectrogram pictures from storage
+        for file in os.listdir("spectrogram/"):
+            os.remove("spectrogram/"+file)
 
-        except:
-                print('[FAILURE -- Spectrogram 2] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
+    except:
+            print('[FAILURE -- Spectrogram 1] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
 
-        return singleImage
+    return listOfImages

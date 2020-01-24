@@ -69,58 +69,31 @@ def geo_model():
     return modelfile
 
 # driver function
-def runScript(isMultipleFiles = False):
+def runScript():
 
-    # Check if multiple files are being analyzed
-    if(isMultipleFiles):
-        # Create dictionary for storing return information
-        # Create a counter for files
-        finalResult = {}
-        fileCount = 0
+    # Create dictionary for storing return information
+    # Create a counter for files
+    finalResult = {}
+    fileCount = 0
 
-        try:
-            # Retrieve File
-            for filename in os.listdir('instance/upload/'):
-                audiofile = "instance/upload/" + filename
+    try:
+        # Retrieve File
+        for filename in os.listdir('instance/upload/'):
+            audiofile = "instance/upload/" + filename
 
-                # Create list to store information
-                result = []
-                result.append( classify_file( audiofile, anthro_model(), 'Anthrophony', '#0088FE' ) )
-                result.append( classify_file(audiofile, bio_model(), 'Biophony', '#00C49F' ) )
-                result.append( classify_file(audiofile, geo_model(), 'Geophony', '#FFBB28' ) )
-
-                # Add result list to finalResult dictionary with filecounter as the key
-                finalResult[fileCount] = result
-                fileCount += 1
-
-
-        except:
-            print('[FAILURE  -- Classification 1] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
-
-
-        return finalResult
-
-
-    # If only one file is being analyzed
-    else:
-
-    # Create dictonary to store return information
-        finalResult = {}
-
-        try:
-            # Retrieve File
-            for filename in os.listdir('instance/upload/'):
-                audiofile = "instance/upload/" + filename
-
-        # Create list to store information
+            # Create list to store information
             result = []
             result.append( classify_file( audiofile, anthro_model(), 'Anthrophony', '#0088FE' ) )
             result.append( classify_file(audiofile, bio_model(), 'Biophony', '#00C49F' ) )
             result.append( classify_file(audiofile, geo_model(), 'Geophony', '#FFBB28' ) )
 
-            # Add result to finalResult as the singular item at key 0
-            finalResult[0] = result
+            # Add result list to finalResult dictionary with filecounter as the key
+            finalResult[fileCount] = result
+            fileCount += 1
 
-        except:
-                print('[FAILURE -- Classification 2] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
-        return finalResult
+
+    except:
+        print('[FAILURE  -- Classification 1] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
+
+
+    return finalResult
