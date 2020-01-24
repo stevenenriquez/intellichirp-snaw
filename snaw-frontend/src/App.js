@@ -21,21 +21,6 @@ class App extends React.Component {
     this.state.selectedFile.push(file);
   };
 
-  fileUploadHandler = () => {
-    const fData = new FormData();
-    fData.append('file', this.state.selectedFile[-1]);
-    fData.append('filename', this.state.selectedFile[-1].name);
-    console.log(fData);
-    // axios api call to upload the selected file
-    axios({
-      method: 'post',
-      url: 'http://126.0.0.1:5000/upload',
-      data: fData,
-    })
-        .then(response => console.log(response))
-        .catch(err => console.log(err));
-  };
-
   render() {
 
     return (
