@@ -7,7 +7,7 @@ import sys
 import subprocess
 from get_spectrogram import runScript as get_spectrogram
 from classification import runScript as get_classification
-
+from acousticIndices import getAcousticIndices as get_acoustic_indices
 UPLOAD_FOLDER = 'instance/upload/'
 ALLOWED_EXTENSIONS = {'wav'}
 
@@ -47,6 +47,9 @@ def classify():
             result = get_classification(True)
         else:
             result = get_classification()
+
+            testAcoustic = get_acoustic_indices()
+            print(testAcoustic)
 
         for file in os.listdir('instance/upload/'):
             os.remove('instance/upload/'+file)

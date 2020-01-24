@@ -668,8 +668,11 @@ def getAcousticIndices(isMultipleFiles = False):
 
         # determine whether multiple files are being analyzed or not
         if(isMultipleFiles):
-            # finalResultsArray will be used to store a list of the result dictionaries
-            finalResultsArray = []
+            # fileDictionary will be used to store the filecount keys with their respective file information
+            fileDictionary = {}
+
+            # Create file counter
+            fileCount = 0
 
             # loop through the files in the directory
             for file in os.listdir("instance/upload/"):
@@ -690,18 +693,18 @@ def getAcousticIndices(isMultipleFiles = False):
                 acoustic_indices = acousticIndices.get_acoustic_indices()
                 acoustic_headers = acousticIndices.get_acoustic_indices_headers()
 
-                # final dictionary is used to store singular file results
-                singleResultDictionary = []
-                # Traverse the acoustic tags
+                # singleResultArray is used to store the results of one file (List of dictionaries)
+                singleResultArray = []
 
+                # Traverse the acoustic tags
                 for i in range(len(acoustic_headers)):
                     # per indices in the length of the acoustic tags,
                     # append dictionary items.
                     singleResultDictionary.append({acoustic_headers[i] : acoustic_indices[i]})
                 # append result dictionary to the final results array
-                finalResultsArray.append(singleResultDictionary)
-
-            return finalResultsArray
+                fileDictionary[fileCount] = singleResultArray
+                fileCount += 1
+            return fileDictionary
 
         else:
             filename = "NULL"
@@ -724,15 +727,19 @@ def getAcousticIndices(isMultipleFiles = False):
             acoustic_indices = acousticIndices.get_acoustic_indices()
             acoustic_headers = acousticIndices.get_acoustic_indices_headers()
 
-            finalDictionary = []
+
+            fileInformationArray = []
+
+            singleFileDictionary = {}
+
             # Traverse the acoustic tags
             for i in range(len(acoustic_headers)):
                 # per indices in the length of the acoustic tags,
                 # append dictionary items.
-                finalDictionary.append({acoustic_headers[i] : acoustic_indices[i]})
-
+                fileInformationArray.append({acoustic_headers[i] : acoustic_indices[i]})
+            singleFileDictionary[0] = fileInformationArray
             # Most likely return the list of dictionaries
-            return finalDictionary
+            return singleFileDictionary
 
 
 
