@@ -117,7 +117,7 @@ def runScript(isMultipleFiles = False):
 
             # remove all spectrogram pictures from storage
             for file in os.listdir("spectrogram/"):
-            os.remove("spectrogram/"+file)
+                os.remove("spectrogram/"+file)
 
         except:
                 print('[FAILURE] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')

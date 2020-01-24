@@ -105,22 +105,22 @@ def runScript(isMultipleFiles = False):
     else:
 
     # Create dictonary to store return information
-    finalResult = {}
+        finalResult = {}
 
-    try:
-        # Retrieve File
-        for filename in os.listdir('instance/upload/'):
-            audiofile = "instance/upload/" + filename
+        try:
+            # Retrieve File
+            for filename in os.listdir('instance/upload/'):
+                audiofile = "instance/upload/" + filename
 
         # Create list to store information
-        result = []
-        result.append( classify_file( audiofile, anthro_model(), 'Anthrophony', '#0088FE' ) )
-        result.append( classify_file(audiofile, bio_model(), 'Biophony', '#00C49F' ) )
-        result.append( classify_file(audiofile, geo_model(), 'Geophony', '#FFBB28' ) )
+            result = []
+            result.append( classify_file( audiofile, anthro_model(), 'Anthrophony', '#0088FE' ) )
+            result.append( classify_file(audiofile, bio_model(), 'Biophony', '#00C49F' ) )
+            result.append( classify_file(audiofile, geo_model(), 'Geophony', '#FFBB28' ) )
 
-        # Add result to finalResult as the singular item at key 0
-        finalResult[0] = result
+            # Add result to finalResult as the singular item at key 0
+            finalResult[0] = result
 
-     except:
+        except:
                 print('[FAILURE] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
         return finalResult
