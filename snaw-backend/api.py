@@ -48,8 +48,8 @@ def classify():
         else:
             result = get_classification()
 
-        #for file in os.listdir('instance/upload/'):
-         #   os.remove('instance/upload/'+file)
+        for file in os.listdir('instance/upload/'):
+            os.remove('instance/upload/'+file)
 
         return result
     except Exception as e:
