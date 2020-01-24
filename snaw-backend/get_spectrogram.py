@@ -120,7 +120,7 @@ def runScript(isMultipleFiles = False):
                 os.remove("spectrogram/"+file)
 
         except:
-                print('[FAILURE] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
+                print('[FAILURE -- Spectrogram 1] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
 
         return listOfImages
 
@@ -134,8 +134,12 @@ def runScript(isMultipleFiles = False):
             for filename in os.listdir('instance/upload/'):
                  audiofile = "instance/upload/" + filename
 
+            if (os.path.isdir('Spectrogram/') == False):
+                os.mkdir('Spectrogram/')
+
+
             # Creates and returns path of created spectrogram file
-            path= "spectrogram/SpectroedImage"
+            path= "Spectrogram/SpectroedImage"
 
             # Run spectrogram plotting
             ims = plotstft(audiofile, plotpath=path)
@@ -147,10 +151,10 @@ def runScript(isMultipleFiles = False):
             singleImage[0] = [filename, 'data:image/png;base64,' + encode.decode("utf-8")]
 
             # remove all spectrogram pictures from storage
-            for file in os.listdir("spectrogram/"):
-                os.remove("spectrogram/"+file)
+            for file in os.listdir("Spectrogram/"):
+                os.remove("Spectrogram/"+file)
 
         except:
-                print('[FAILURE] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
+                print('[FAILURE -- Spectrogram 2] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
 
         return singleImage

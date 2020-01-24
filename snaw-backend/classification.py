@@ -95,7 +95,7 @@ def runScript(isMultipleFiles = False):
 
 
         except:
-            print('[FAILURE] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
+            print('[FAILURE  -- Classification 1] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
 
 
         return finalResult
@@ -122,5 +122,5 @@ def runScript(isMultipleFiles = False):
             finalResult[0] = result
 
         except:
-                print('[FAILURE] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
+                print('[FAILURE -- Classification 2] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
         return finalResult
