@@ -42,14 +42,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-/* Func: get_spectro()
-   When the function is called, an ajax call is made to /results/spectro
-   flask function returns a file location of a created spectrogram file based on audio file uploaded
-   TODO:: Allow spectorgrams to be created for multiple files Issue #10
-   spectro_load set to true, allows function to only be loaded on results.js creation, not update
-        TODO:: Results.js is initialized multiple times, get_spectro() in turn is ran more than once Issue #11
-   ajax response is returned to the function
-*/
+
 
 /* Function: fileInserted()
  * Functionality:
@@ -75,7 +68,14 @@ function fileInserted(){
     });
     return result;
 }
-
+/* Func: get_spectro()
+   When the function is called, an ajax call is made to /results/spectro
+   flask function returns a file location of a created spectrogram file based on audio file uploaded
+   TODO:: Allow spectorgrams to be created for multiple files Issue #10
+   spectro_load set to true, allows function to only be loaded on results.js creation, not update
+        TODO:: Results.js is initialized multiple times, get_spectro() in turn is ran more than once Issue #11
+   ajax response is returned to the function
+*/
 function get_spectro(){
     var result = '';
     $.ajax({
@@ -83,6 +83,7 @@ function get_spectro(){
         type: "GET",
         async: false,
         success: function(response){
+        console.log(response);
         result = response;
         },
         error: function(error){
@@ -139,12 +140,17 @@ function downloadTxtFile(){
  *
  */
 if(fileInserted() == "True") {
+
     var spectroImg = get_spectro();
-    if (spectroImg.length > 1) {
+    // Check if the spectroImg dictionary has multiple entries.
+    if (Object.keys(spectroImg).length > 1) {
+
+        // Set multiFile flag to true to change the results.js return statement
         var multiFile = true;
     }
+    // Run classification function. returns dictionary. Will delete all upload files upon completion
     var classification = get_class();
-    // Created classification file variable
+
 }
 function Results() {
     const classes = useStyles();
