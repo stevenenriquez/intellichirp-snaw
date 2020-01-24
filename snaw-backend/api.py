@@ -7,7 +7,7 @@ import sys
 import subprocess
 from get_spectrogram import runScript as get_spectrogram
 from classification import runScript as get_classification
-
+from acousticIndices import getAcousticIndices as get_acoustic_indices
 UPLOAD_FOLDER = 'instance/upload/'
 ALLOWED_EXTENSIONS = {'wav'}
 
@@ -33,32 +33,40 @@ def upload_file():
       f.save(os.path.join(UPLOAD_FOLDER, filename))
       return redirect('http://127.0.0.1:5000')
 
-@app.route("/results")
-def analyze():
-    return
-    #analysisOutput = subprocess.check_output([sys.executable, "CityNet/demo.py", "CityNet/demo/forest_path126.wav"])
-    #Run CityNet demo.py script
-    #runFunction()
-    #show the pdf provided by the script
-    #try:
-    #    return send_file('CityNet/demo/predictions.pdf',
-    #                     attachment_filename='predictions.pdf')
-    #except Exception as e:
-    #    return str(e)
+@app.route('/didUpload', methods = ['GET'])
+def didFileUpload():
+    if(len(os.listdir('instance/upload/')) != 0):
+        return "True"
+    else:
+        return "False"
 
 @app.route("/results/classification")
 def classify():
     try:
-        result = get_classification()
-        # print(result)
-        return jsonify(result).data
+        if(len(os.listdir("instance/upload")) > 1):
+            result = get_classification(True)
+        else:
+            result = get_classification()
+
+            testAcoustic = get_acoustic_indices()
+            print(testAcoustic)
+
+        for file in os.listdir('instance/upload/'):
+            os.remove('instance/upload/'+file)
+
+        return result
     except Exception as e:
         return str(e)
 
 @app.route("/results/spectro")
 def get_spectro():
     try:
-        return get_spectrogram()
+        if(len(os.listdir("instance/upload")) > 1):
+            result = get_spectrogram(True)
+        else:
+            result = get_spectrogram()
+
+        return result
     except Exception as e:
         return str(e)
 

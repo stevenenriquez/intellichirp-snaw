@@ -16,11 +16,12 @@ export default function UploadButton() {
 
   return (
     <div>
+        {/* The input for the application to ingest wav files.
+            Wav files are the only file type that is accepted. */}
         <input
             accept="audio/wav"
             className={classes.input}
             id="outlined-button-file"
-            multiple
             type="file"
         />
         <label htmlFor="outlined-button-file">

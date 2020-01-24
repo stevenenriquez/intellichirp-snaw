@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 
 import {Cell, Legend, Pie, PieChart, Tooltip,} from 'recharts';
+import {Typography} from "@material-ui/core";
 
 // TODO:: Dynamically add data to graphs from json request Issue #7
 
@@ -220,16 +221,46 @@ const series = [
     },
 ];
 
+function getTotals(classification_dict) {
+    var total  = 0;
+    classification_dict.map( s => (
+        s.category !== 'NO' ? total += 1 : console.log("")
+    ));
+    return total;
+}
+
+var anthro_total = 0;
+var bio_total = 0;
+var geo_total = 0;
+var pie_data = [
+    { name : 'Anthrophony', value : anthro_total },
+    { name : 'Biophony', value : bio_total },
+    { name : 'Geophony', value : geo_total }
+];
+
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 export default class Example extends PureComponent {
   static jsfiddleUrl = 'https://jsfiddle.net/alidingling/k9jkog04/';
 
+
+
   render() {
+
+    anthro_total = getTotals( this.props.series[0].data );
+    bio_total = getTotals( this.props.series[1].data );
+    geo_total = getTotals( this.props.series[2].data );
+
+    pie_data = [
+      { name : 'Anthrophony', value : anthro_total },
+      { name : 'Biophony', value : bio_total },
+      { name : 'Geophony', value : geo_total }
+      ];
+
     return (
       <PieChart width={400} height={400}>
         <Pie
-          data={data01}
+          data={pie_data}
           cx={200}
           cy={200}
           labelLine={false}
@@ -239,7 +270,7 @@ export default class Example extends PureComponent {
           label
         >
           {
-            data01.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
+            pie_data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
           }
         </Pie>
         <Tooltip/>
