@@ -85,6 +85,7 @@ export default function SimpleTable(props) {
                 <TableCell align="right">{row.color}</TableCell>
               </TableRow>
           ))}
+
         </TableBody>
       </Table>
     </Paper>

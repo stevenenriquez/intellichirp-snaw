@@ -126,14 +126,12 @@ function get_class(){
  */
 function downloadTxtFile(){
     const element = document.createElement("a");
-    const file = new Blob([classification], {type: 'text/plain'});
+    const file = new Blob([classification[0]], {type: 'text/plain'});
     element.href = URL.createObjectURL(file);
     element.download = "classification_results.txt";
     document.body.appendChild(element); // Required for this to work in FireFox
     element.click();
 }
-
-// TODO:: Add spectrogram file location code to get_spectro() function Issue #14
 
 /*
  * Here we are checking the above function fileInserted,
@@ -195,7 +193,7 @@ function Results() {
                                         <Paper><LineChart series={classification[0]}/></Paper>
                                     </Grid>
                                     <Grid item piechart>
-                                        <Paper><PieChart/></Paper>
+                                        <Paper><PieChart series={classification[0]}/></Paper>
                                     </Grid>
                                 </Grid>
                                 <br/>
@@ -233,7 +231,7 @@ function Results() {
                                         <Paper><LineChart series={classification[1]}/></Paper>
                                     </Grid>
                                     <Grid item piechart>
-                                        <Paper><PieChart/></Paper>
+                                        <Paper><PieChart series={classification[0]}/></Paper>
                                     </Grid>
                                 </Grid>
                                 <br/>
@@ -285,7 +283,7 @@ function Results() {
                                             <Paper><LineChart series={classification[0]}/></Paper>
                                         </Grid>
                                         <Grid item piechart>
-                                            <Paper><PieChart/></Paper>
+                                            <Paper><PieChart series={classification[0]}/></Paper>
                                         </Grid>
                                     </Grid>
                                     <br/>
