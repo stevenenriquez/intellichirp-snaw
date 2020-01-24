@@ -141,12 +141,16 @@ function downloadTxtFile(){
  *
  */
 if(fileInserted() == "True") {
+
     var spectroImg = get_spectro();
+    // Check if the spectroImg dictionary has multiple entries.
     if (spectroImg.length > 1) {
+        // Set multiFile flag to true to change the results.js return statement
         var multiFile = true;
     }
+    // Run classification function. returns dictionary. Will delete all upload files upon completion
     var classification = get_class();
-    // Created classification file variable
+
 }
 function Results() {
     const classes = useStyles();
