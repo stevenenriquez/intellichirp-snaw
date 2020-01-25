@@ -71,9 +71,7 @@ function fileInserted(){
 /* Func: get_spectro()
    When the function is called, an ajax call is made to /results/spectro
    flask function returns a file location of a created spectrogram file based on audio file uploaded
-   TODO:: Allow spectorgrams to be created for multiple files Issue #10
    spectro_load set to true, allows function to only be loaded on results.js creation, not update
-        TODO:: Results.js is initialized multiple times, get_spectro() in turn is ran more than once Issue #11
    ajax response is returned to the function
 */
 function get_spectro(){
@@ -96,10 +94,8 @@ function get_spectro(){
 /* Func: get_class()
    When the function is called, an ajax call is made to /results/classification
    flask function returns a JSON string featuring a dictionary of time stamps and classification
-       based on the audio file uploaded
-   TODO:: Allow classifications to be created for multiple files Issue #9
+   based on the audio file uploaded
    spectro_load set to true, allows function to only be loaded on results.js creation, not update
-        TODO:: Results.js is initialized multiple times, get_spectro() in turn is ran more than once Issue #11
    ajax response is returned to the function
 */
 function get_class(){
@@ -124,11 +120,12 @@ function get_class(){
    TODO:: Pretty print classification results in the returned export file Issue #13
    TODO:: Save classification results to a csv. file Issue #14
  */
-function downloadTxtFile(){
+function downloadTxtFile(key){
     const element = document.createElement("a");
-    const file = new Blob([JSON.stringify(classification[0]["data"])], {type: 'text/plain'});
+    // To receive the raw output for the classification, use "2" as the second index when searching finalInforDictionary.
+    const file = new Blob([JSON.stringify(finalInfoDictionary[key][2])], {type: 'text/plain'});
     element.href = URL.createObjectURL(file);
-    element.download = "classification_results.txt";
+    element.download = "classification_"+finalInfoDictionary[key][0]+"_results.txt";
     document.body.appendChild(element); // Required for this to work in FireFox
     element.click();
 }
@@ -141,17 +138,23 @@ function downloadTxtFile(){
  */
 if(fileInserted() == "True") {
 
+    // Create a final dictionary to store all information about each file
+    var finalInfoDictionary
+    // Run spectrogram conversion
     var spectroImg = get_spectro();
-    // Check if the spectroImg dictionary has multiple entries.
-    if (Object.keys(spectroImg).length > 1) {
-
-        // Set multiFile flag to true to change the results.js return statement
-        var multiFile = true;
-    }
-    // Run classification function. returns dictionary. Will delete all upload files upon completion
     var classification = get_class();
 
+    finalInfoDictionary = spectroImg;
+    // Run classification function. returns dictionary. Will delete all upload files upon completion
+
+
+    //Put everything together into one dictionary for dynamic adding.
+    for(var i = 0; i < Object.keys(spectroImg).length; i++){
+        finalInfoDictionary[i].push(classification[i]);
+    }
+    console.log(finalInfoDictionary);
 }
+
 
 
 function Results() {
@@ -159,58 +162,66 @@ function Results() {
     const [expanded, setExpanded] = React.useState(false);
 
     const handleChange = panel => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+        setExpanded(isExpanded ? panel : false);
+    };
 
-    if(multiFile){
-        return (
+
+
+    return (
         <div className="App">
+
             <ApplicationBar/>
             <Container>
                 <br/>
                 <Typography variant="h3" component="h1">Results of Analysis</Typography>
                 <br/>
                 <Container fixed>
-                    <ExpansionPanel expanded={expanded === 'panel0'} onChange={handleChange('panel0')}>
-                        <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon/>}
-                            aria-controls="panel1bh-content"
-                            id="panel1bh-header">
-                            <Typography className={classes.heading}>Results of</Typography>
-                            <Typography className={classes.secondaryHeading}>{spectroImg[0][0]}</Typography>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
-                            <Container>
-                                <Paper>
-                                    <Typography variant='subtitle1'>Spectrogram</Typography>
-                                    <CardMedia id="spectrogram" component='img' image={spectroImg[0][1]}
-                                               className="classes.media"/>
-                                </Paper>
-                                <br/>
-                                <Typography variant='subtitle1'>Results of SVM Anthrophony, Geophony, and Biophony Class
-                                    Models</Typography>
-                                <br/>
-                                <Grid container spacing={2}>
-                                    <Grid item linechart>
-                                        <Paper><LineChart series={classification[0]}/></Paper>
-                                    </Grid>
-                                    <Grid item piechart>
-                                        <Paper><PieChart series={classification[0]}/></Paper>
-                                    </Grid>
-                                </Grid>
-                                <br/>
-                                <SimpleTable testing={classification[0]}/>
-                                <br/>
-                                <Paper>
-                                    <Button onClick={function () {
-                                        downloadTxtFile()
-                                    }} variant="contained" className={classes.button}>Export SVM Classification</Button>
-                                </Paper>
-                            </Container>
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
-        );
-    }
-}
+                    {Object.entries(finalInfoDictionary).map(([key, value]) => {
+                        return (
+                            <ExpansionPanel expanded={expanded === key} onChange={handleChange(key)}>
+                                <ExpansionPanelSummary
+                                    expandIcon={<ExpandMoreIcon/>}
+                                    aria-controls="panel1bh-content"
+                                    id="panel1bh-header">
+                                    <Typography className={classes.heading}>Results of</Typography>
+                                    <Typography className={classes.secondaryHeading}>{value[0]}</Typography>
+                                </ExpansionPanelSummary>
+                                <ExpansionPanelDetails>
+                                    <Container>
+                                        <Paper>
+                                            <Typography variant='subtitle1'>Spectrogram</Typography>
+                                            <CardMedia id="spectrogram" component='img' image={value[1]}
+                                                       className="classes.media"/>
+                                        </Paper>
+                                        <br/>
+                                        <Typography variant='subtitle1'>Results of SVM Anthrophony, Geophony, and Biophony Class
+                                            Models</Typography>
+                                        <br/>
+                                        <Grid container spacing={2}>
+                                            <Grid item linechart>
+                                                <Paper><LineChart series={value[2]}/></Paper>
+                                            </Grid>
+                                            <Grid item piechart>
+                                                <Paper><PieChart series={value[2]}/></Paper>
+                                            </Grid>
+                                        </Grid>
+                                        <br/>
+                                        <SimpleTable testing={classification[0]}/>
+                                        <br/>
+                                        <Paper>
+                                            <Button onClick={function () {
+                                                downloadTxtFile(key)
+                                            }} variant="contained" className={classes.button}>Export SVM Classification</Button>
+                                        </Paper>
+                                    </Container>
+                                </ExpansionPanelDetails>
+                            </ExpansionPanel>
+                            )})}
+                </Container>
+            </Container>
+        </div>
+            )
+        }
+
 
 export default Results;
