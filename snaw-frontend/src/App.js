@@ -18,7 +18,6 @@ class App extends React.Component {
   fileSelectedHandler = event => {
     //event.preventDefault();
     this.state.selectedFile = Array.from(event.target.files)
-    console.log(this.state.selectedFile);
   };
 
   render() {
