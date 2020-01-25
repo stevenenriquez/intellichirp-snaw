@@ -28,10 +28,11 @@ def allowed_file(filename):
 @app.route('/uploader', methods = ['GET', 'POST'])
 def upload_file():
    if request.method == 'POST':
-      f = request.files['file']
-      filename = secure_filename(f.filename)
-      f.save(os.path.join(UPLOAD_FOLDER, filename))
-      return redirect('http://127.0.0.1:5000')
+        mutableDictList = request.files.copy()
+        for f in mutableDictList.getlist('file'):
+            filename = secure_filename(f.filename)
+            f.save(os.path.join(UPLOAD_FOLDER, filename))
+        return redirect('http://127.0.0.1:5000')
 
 @app.route('/didUpload', methods = ['GET'])
 def didFileUpload():
@@ -53,8 +54,8 @@ def classify():
         #testAcoustic = get_acoustic_indices()
         #print(testAcoustic)
 
-        #for file in os.listdir('instance/upload/'):
-         #   os.remove('instance/upload/'+file)
+        for file in os.listdir('instance/upload/'):
+            os.remove('instance/upload/'+file)
 
         return result
     except Exception as e:
