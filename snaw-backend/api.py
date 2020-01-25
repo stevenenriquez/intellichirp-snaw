@@ -50,8 +50,8 @@ def classify():
     try:
         result = get_classification()
 
-        testAcoustic = get_acoustic_indices()
-        print(testAcoustic)
+        #testAcoustic = get_acoustic_indices()
+        #print(testAcoustic)
 
         #for file in os.listdir('instance/upload/'):
          #   os.remove('instance/upload/'+file)
