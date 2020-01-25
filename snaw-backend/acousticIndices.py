@@ -651,17 +651,19 @@ class AcousticIndices(object):
 
 '''
 Function: getAcousticIndices(fileOrDirectory, isDirectory)
-
 Params: 
 - fileOrDirectory = file path OR directory with .WAV files
 - isDirectroy = OPTIONAL set to False. This must be called True if passing a directory instead of a single file.
-
-This function begins the process of generating the Acoustic Indices on a specific file or directory
-of files.
-  
+Caller: Api.py (Not yet)
+###------------------------------------------------------###
+This function begins the process of generating the Acoustic
+Indices on a specific file or directory of files.
+###------------------------------------------------------###
 CREDIT:
-The above code is from the user "amogh3892" with repo "Acoustic-Indices." This set of
-files is being treated as a library to be used by our product.
+The above code is from the user "amogh3892" with repo
+"Acoustic-Indices." This set of files is being treated
+as a library to be used by our product.
+###------------------------------------------------------###
 
 '''
 def getAcousticIndices():
