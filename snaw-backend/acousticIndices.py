@@ -650,6 +650,7 @@ class AcousticIndices(object):
 
 
 '''
+###------------------------------------------------------###
 Function: getAcousticIndices(fileOrDirectory, isDirectory)
 Params: 
 - fileOrDirectory = file path OR directory with .WAV files

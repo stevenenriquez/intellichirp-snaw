@@ -17,6 +17,7 @@ app.secret_key = 'secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 
 '''
+###------------------------------------------------------###
 App Routing: '/'
 Function: home()
 ###------------------------------------------------------###
@@ -33,6 +34,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 '''
+###------------------------------------------------------###
 App Routing: '/uploader'
 Function: upload_file()
 Caller: App.js
@@ -57,6 +59,7 @@ def upload_file():
 
 
 '''
+###------------------------------------------------------###
 App Routing: '/didUpload'
 Function: didFileUpload()
 Caller: Results.js
@@ -79,6 +82,7 @@ def didFileUpload():
         return "False"
 
 '''
+###------------------------------------------------------###
 App Routing: '/results/classification'
 Function: classify()
 Caller: Results.js
@@ -102,6 +106,7 @@ def classify():
         return str(e)
 
 '''
+###------------------------------------------------------###
 App Routing: '/results/spectro'
 Function: get_spectro()
 Caller: Results.js
@@ -111,7 +116,7 @@ The function runScript() is pulled into api.py as "get_spectrogram()."
 After the function finishes operations, the uploaded files will
 be deleted.
 ###------------------------------------------------------###
-'''v
+'''
 @app.route("/results/spectro")
 def get_spectro():
     try:
