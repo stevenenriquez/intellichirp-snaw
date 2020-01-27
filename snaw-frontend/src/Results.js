@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -42,34 +42,21 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-var specto_load = false;
-function get_spectro(){
+
+
+/* Function: fileInserted()
+ * Functionality:
+ * This function is in place to stop the page from constantly
+ * running the classification and spectrogram functions.
+ * It does so by checking if any files are actually present, if
+ * there are none, the functions will not run. Once those functions
+ * do run, the files are deleted.
+ */
+function fileInserted(){
     var result = '';
-    if(specto_load) return;
     $.ajax({
-        url: '/results/spectro',
+        url: '/didUpload',
         type: "GET",
-        async: false,
-        success: function(response){
-        console.log(response);
-        result = response;
-        },
-        error: function(error){
-        console.log(error);
-        },
-    });
-    specto_load = true;
-    return result;
-}
-
-var class_load = false;
-function get_class(){
-    var result = '';
-    if(class_load) return;
-
-    $.ajax({
-        url: '/results/classification',
-        type: 'GET',
         async: false,
         success: function(response){
             console.log(response);
@@ -79,119 +66,174 @@ function get_class(){
             console.log(error);
         },
     });
-    class_load = true;
+    return result;
+}
+/* Func: get_spectro()
+   When the function is called, an ajax call is made to /results/spectro
+   flask function returns a file location of a created spectrogram file based on audio file uploaded
+   spectro_load set to true, allows function to only be loaded on results.js creation, not update
+   ajax response is returned to the function
+*/
+function get_spectro(){
+    var result = '';
+    $.ajax({
+        url: '/results/spectro',
+        type: "GET",
+        async: false,
+        success: function(response){
+        //console.log(response);
+        result = response;
+        },
+        error: function(error){
+        console.log(error);
+        },
+    });
+    return result;
+}
+
+/* Func: get_class()
+   When the function is called, an ajax call is made to /results/classification
+   flask function returns a JSON string featuring a dictionary of time stamps and classification
+   based on the audio file uploaded
+   spectro_load set to true, allows function to only be loaded on results.js creation, not update
+   ajax response is returned to the function
+*/
+function get_class(){
+    var result = '';
+    $.ajax({
+        url: '/results/classification',
+        type: 'GET',
+        async: false,
+        success: function(response){
+            //console.log(response);
+            result = response;
+        },
+        error: function(error){
+            console.log(error);
+        },
+    });
     return result
 }
 
-function downloadTxtFile(){
+/* func: downloadTxtFile
+   creates a txt file with a classification result when export button is pressed
+   TODO:: Pretty print classification results in the returned export file Issue #13
+   TODO:: Save classification results to a csv. file Issue #14
+ */
+function downloadTxtFile(fileNumber){
     const element = document.createElement("a");
-    const file = new Blob([classification], {type: 'text/plain'});
+
+    /* Proper values to traverse the finalInfoDictionary:
+     * fileNumber (passed in parameter) =  the number of the file in the dictionary. Dynamically called by Results().
+     * fileName = The name of the file
+     * fileSpectro = The Base64 of the Spectrogram image
+     * fileData =  The classification.py output of the file
+     *
+     * Example of the dictionary:  {fileNumber: [fileName, fileSpectro, fileData]}
+     */
+    let fileName = 0;
+    let fileSpectro = 1;
+    let fileData = 2;
+
+    const file = new Blob([JSON.stringify(finalInfoDictionary[fileNumber][fileData])], {type: 'text/plain'});
     element.href = URL.createObjectURL(file);
-    element.download = "classification_results.txt";
+    element.download = "classification_"+finalInfoDictionary[fileNumber][fileName]+"_results.txt";
     document.body.appendChild(element); // Required for this to work in FireFox
     element.click();
 }
 
-var spectroImg = new Image();
-spectroImg.src = 'data:image/png;base64,' + get_spectro();
-var classification = get_class();
+/*
+ * Here we are checking the above function fileInserted,
+ * which will tell us if there are files present, if not
+ * the get_spectro and get_class will not run
+ */
+if(fileInserted() == "True") {
+
+    // Create a final dictionary to store all information about each file
+    var finalInfoDictionary
+    // Run spectrogram conversion
+    var spectroImg = get_spectro();
+    var classification = get_class();
+
+    finalInfoDictionary = spectroImg;
+    // Run classification function. returns dictionary. Will delete all upload files upon completion
+
+
+    //Put everything together into one dictionary for dynamic adding.
+    for(var i = 0; i < Object.keys(spectroImg).length; i++){
+        finalInfoDictionary[i].push(classification[i]);
+    }
+    console.log(finalInfoDictionary);
+}
+
+
 
 function Results() {
-const classes = useStyles();
-const [expanded, setExpanded] = React.useState(false);
+    const classes = useStyles();
+    const [expanded, setExpanded] = React.useState(false);
 
-  const handleChange = panel => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+    const handleChange = panel => (event, isExpanded) => {
+        setExpanded(isExpanded ? panel : false);
+    };
 
-return (
-<div className="App">
-    <ApplicationBar/>
-    <Container>
-        <br/>
-        <Typography variant="h3" component="h1">Results of Analysis</Typography>
-        <br/>
-        <Container fixed>
-            <ExpansionPanel expanded={expanded === 'panel0'} onChange={handleChange('panel0')}>
-                <ExpansionPanelSummary
-                    expandIcon={<ExpandMoreIcon/>}
-                    aria-controls="panel1bh-content"
-                    id="panel1bh-header">
-                    <Typography className={classes.heading}>Results of</Typography>
-                    <Typography className={classes.secondaryHeading}>nature_sc.wav</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    <Container>
-                        <Paper>
-                            <Typography variant='subtitle1'>Spectrogram</Typography>
-                            <CardMedia id="spectrogram" component='img' image={spectroImg.src}
-                                       className="classes.media"/>
-                        </Paper>
-                        <br/>
-                        <Typography variant='subtitle1'>Results of SVM Anthrophony, Geophony, and Biophony Class
-                            Models</Typography>
-                        <br/>
-                        <Grid container spacing={2}>
-                            <Grid item linechart>
-                                <Paper><LineChart/></Paper>
-                            </Grid>
-                            <Grid item piechart>
-                                <Paper><PieChart/></Paper>
-                            </Grid>
-                        </Grid>
-                        <br/>
-                        <SimpleTable/>
-                        <br/>
-                        <Paper>
-                            <Button onClick={function () {
-                                downloadTxtFile()
-                            }} variant="contained" className={classes.button}>Export SVM Classification</Button>
-                        </Paper>
-                    </Container>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
-            <ExpansionPanel expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-                <ExpansionPanelSummary
-                    expandIcon={<ExpandMoreIcon/>}
-                    aria-controls="panel1bh-content"
-                    id="panel1bh-header">
-                    <Typography className={classes.heading}>Results of</Typography>
-                    <Typography className={classes.secondaryHeading}>rainforest-sc.wav</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    <Container>
-                        <Paper>
-                            <Typography variant='subtitle1'>Spectrogram</Typography>
-                            <CardMedia id="spectrogram" component='img' image={spectroImg.src}
-                                       className="classes.media"/>
-                        </Paper>
-                        <br/>
-                        <Typography variant='subtitle1'>Results of SVM Anthrophony, Geophony, and Biophony Class
-                            Models</Typography>
-                        <br/>
-                        <Grid container spacing={2}>
-                            <Grid item linechart>
-                                <Paper><LineChart/></Paper>
-                            </Grid>
-                            <Grid item piechart>
-                                <Paper><PieChart/></Paper>
-                            </Grid>
-                        </Grid>
-                        <br/>
-                        <SimpleTable/>
-                        <br/>
-                        <Paper>
-                            <Button onClick={function () {
-                                downloadTxtFile()
-                            }} variant="contained" className={classes.button}>Export SVM Classification</Button>
-                        </Paper>
-                    </Container>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
-        </Container>
-    </Container>
-    </div>
-);
-}
+
+
+    return (
+        <div className="App">
+
+            <ApplicationBar/>
+            <Container>
+                <br/>
+                <Typography variant="h3" component="h1">Results of Analysis</Typography>
+                <br/>
+                <Container fixed>
+                    {Object.entries(finalInfoDictionary).map(([key, value]) => {
+                        console.log(key);
+                        return (
+                            <ExpansionPanel expanded={expanded === key} onChange={handleChange(key)}>
+                                <ExpansionPanelSummary
+                                    expandIcon={<ExpandMoreIcon/>}
+                                    aria-controls="panel1bh-content"
+                                    id="panel1bh-header">
+                                    <Typography className={classes.heading}>Results of</Typography>
+                                    <Typography className={classes.secondaryHeading}>{value[0]}</Typography>
+                                </ExpansionPanelSummary>
+                                <ExpansionPanelDetails>
+                                    <Container>
+                                        <Paper>
+                                            <Typography variant='subtitle1'>Spectrogram</Typography>
+                                            <CardMedia id="spectrogram" component='img' image={value[1]}
+                                                       className="classes.media"/>
+                                        </Paper>
+                                        <br/>
+                                        <Typography variant='subtitle1'>Results of SVM Anthrophony, Geophony, and Biophony Class
+                                            Models</Typography>
+                                        <br/>
+                                        <Grid container spacing={2}>
+                                            <Grid item linechart>
+                                                <Paper><LineChart series={value[2]}/></Paper>
+                                            </Grid>
+                                            <Grid item piechart>
+                                                <Paper><PieChart series={value[2]}/></Paper>
+                                            </Grid>
+                                        </Grid>
+                                        <br/>
+                                        <SimpleTable testing={classification[0]}/>
+                                        <br/>
+                                        <Paper>
+                                            <Button onClick={function () {
+                                                downloadTxtFile(key)
+                                            }} variant="contained" className={classes.button}>Export SVM Classification</Button>
+                                        </Paper>
+                                    </Container>
+                                </ExpansionPanelDetails>
+                            </ExpansionPanel>
+                            )})}
+                </Container>
+            </Container>
+        </div>
+            )
+        }
+
 
 export default Results;

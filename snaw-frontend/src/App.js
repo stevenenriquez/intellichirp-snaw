@@ -16,23 +16,8 @@ class App extends React.Component {
   }
 
   fileSelectedHandler = event => {
-    event.preventDefault();
-    let file = event.target.files[-1];
-    this.state.selectedFile.push(file);
-  };
-
-  fileUploadHandler = () => {
-    const fData = new FormData();
-    fData.append('file', this.state.selectedFile[-1]);
-    fData.append('filename', this.state.selectedFile[-1].name);
-    console.log(fData);
-    axios({
-      method: 'post',
-      url: 'http://126.0.0.1:5000/upload',
-      data: fData,
-    })
-        .then(response => console.log(response))
-        .catch(err => console.log(err));
+    //event.preventDefault();
+    this.state.selectedFile = Array.from(event.target.files)
   };
 
   render() {
@@ -51,9 +36,10 @@ class App extends React.Component {
             {/*<InputLabel htmlFor="my-input">Upload File</InputLabel>*/}
             <label htmlFor='my-input'><Button variant="outlined" color='#3f5a14' component='span'>Upload Audio
               File</Button></label>
-            <Input id="my-input" aria-describedby="my-helper-text" type='file' name='file' style={{display: 'none'}}/>
-            <FormHelperText id="my-helper-text">Drag and drop WAV files here, or click the Upload button to select
-              file/s.</FormHelperText>
+            <input id="my-input" aria-describedby="my-helper-text" type='file' multiple={true} onChange={this.fileSelectedHandler} name='file' style={{display: 'none'}}/>
+            <FormHelperText id="my-helper-text">
+                Drag and drop WAV files here, or click the Upload button to select file/s.
+            </FormHelperText>
 
             <label htmlFor='my-submit'><Button variant="contained" backgroundColor='#3f5a14'
                                                component='span'>Submit</Button></label>
