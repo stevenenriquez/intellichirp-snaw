@@ -88,7 +88,7 @@ Function: classify()
 Caller: Results.js
 ###------------------------------------------------------###
 calls the function runScript() within classification.py.
-The fucntion runScript() is pulled into api.py as "get_classification()."
+The function runScript() is pulled into api.py as "get_classification()."
 After the function finishes operations, the uploaded files will
 be deleted.
 ###------------------------------------------------------###
