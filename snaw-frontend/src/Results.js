@@ -81,7 +81,7 @@ function get_spectro(){
         type: "GET",
         async: false,
         success: function(response){
-        console.log(response);
+        //console.log(response);
         result = response;
         },
         error: function(error){
@@ -105,7 +105,7 @@ function get_class(){
         type: 'GET',
         async: false,
         success: function(response){
-            console.log(response);
+            //console.log(response);
             result = response;
         },
         error: function(error){
@@ -120,12 +120,24 @@ function get_class(){
    TODO:: Pretty print classification results in the returned export file Issue #13
    TODO:: Save classification results to a csv. file Issue #14
  */
-function downloadTxtFile(key){
+function downloadTxtFile(fileNumber){
     const element = document.createElement("a");
-    // To receive the raw output for the classification, use "2" as the second index when searching finalInforDictionary.
-    const file = new Blob([JSON.stringify(finalInfoDictionary[key][2])], {type: 'text/plain'});
+
+    /* Proper values to traverse the finalInfoDictionary:
+     * fileNumber (passed in parameter) =  the number of the file in the dictionary. Dynamically called by Results().
+     * fileName = The name of the file
+     * fileSpectro = The Base64 of the Spectrogram image
+     * fileData =  The classification.py output of the file
+     *
+     * Example of the dictionary:  {fileNumber: [fileName, fileSpectro, fileData]}
+     */
+    let fileName = 0;
+    let fileSpectro = 1;
+    let fileData = 2;
+
+    const file = new Blob([JSON.stringify(finalInfoDictionary[fileNumber][fileData])], {type: 'text/plain'});
     element.href = URL.createObjectURL(file);
-    element.download = "classification_"+finalInfoDictionary[key][0]+"_results.txt";
+    element.download = "classification_"+finalInfoDictionary[fileNumber][fileName]+"_results.txt";
     document.body.appendChild(element); // Required for this to work in FireFox
     element.click();
 }
@@ -134,7 +146,6 @@ function downloadTxtFile(key){
  * Here we are checking the above function fileInserted,
  * which will tell us if there are files present, if not
  * the get_spectro and get_class will not run
- *
  */
 if(fileInserted() == "True") {
 
@@ -177,6 +188,7 @@ function Results() {
                 <br/>
                 <Container fixed>
                     {Object.entries(finalInfoDictionary).map(([key, value]) => {
+                        console.log(key);
                         return (
                             <ExpansionPanel expanded={expanded === key} onChange={handleChange(key)}>
                                 <ExpansionPanelSummary
