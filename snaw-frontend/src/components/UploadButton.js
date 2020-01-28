@@ -22,7 +22,6 @@ export default function UploadButton() {
             accept="audio/wav"
             className={classes.input}
             id="outlined-button-file"
-            multiple
             type="file"
         />
         <label htmlFor="outlined-button-file">

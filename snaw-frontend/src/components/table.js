@@ -6,6 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import {Typography} from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
@@ -32,11 +33,16 @@ const rows = [
   createData('Anthrophony', 4, 10),
 ];
 
-export default function SimpleTable() {
+const rows2 = [
+  {"class_name" : "Geophony", "seconds" : 14, "percentage" : 45}
+];
+
+export default function SimpleTable(props) {
   const classes = useStyles();
 
   return (
     <Paper className={classes.root}>
+        <Typography>{props.testing[0].name}</Typography>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -48,7 +54,7 @@ export default function SimpleTable() {
         <TableBody>
           {/* map function on rows list,
               for each row create a result in the table */}
-          {rows.map(row => (
+          {rows2.map(row => (
             <TableRow key={row.class_name}>
               <TableCell component="th" scope="row">
                 {row.class_name}
@@ -57,6 +63,29 @@ export default function SimpleTable() {
               <TableCell align="right">{row.percentage}</TableCell>
               </TableRow>
           ))}
+        </TableBody>
+      </Table>
+      <Table className={classes.table} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Model Type</TableCell>
+            <TableCell align="right">Model Color</TableCell>
+            <TableCell align="right">Model Color</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {/* map function on rows list,
+              for each row create a result in the table */}
+          {props.testing.map(row => (
+              <TableRow key={row.name}>
+                <TableCell component="th" scope="row">
+                  {row.name}
+                </TableCell>
+                <TableCell align="right">{row.color}</TableCell>
+                <TableCell align="right">{row.color}</TableCell>
+              </TableRow>
+          ))}
+
         </TableBody>
       </Table>
     </Paper>
