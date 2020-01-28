@@ -93,7 +93,7 @@ def runScript():
 
 
     except:
-        print('[FAILURE  -- Classification 1] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
+        print('[FAILURE  -- Classification 1] File upload unsuccessful, or not file uploaded.')
 
 
     return finalResult
