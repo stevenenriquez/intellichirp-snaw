@@ -1,7 +1,10 @@
 import React, {PureComponent} from 'react';
 import {CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from 'recharts';
 
-const series = [
+// TODO:: Dynamically add data to graphs from json request Issue #7
+
+//MOCk DATA
+const series2 = [
   {
     name: 'Anthrophony',
     color: '#0088FE',
@@ -225,8 +228,8 @@ export default class Example extends PureComponent {
         <YAxis dataKey="category" type='category'/>
         <Legend />
         <Tooltip />
-        {series.map( s => (
-            <Line dataKey='category' data={s.data} name={s.name} key={s.name} stroke={s.color} type='stepAfter' strokeWidth='3'/>
+        {this.props.series.map( s => (
+            <Line dataKey='category' data={s.data} name={s.name} key={s.name} stroke={s.color} type='step' strokeWidth='3'/>
         ))}
       </LineChart>
     );

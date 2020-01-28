@@ -6,6 +6,7 @@ import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles({});
 
+/* Creates a static Application bar to be featured on the top of each page in the website */
 export default function Applicationbar() {
     const classes = useStyles();
 
