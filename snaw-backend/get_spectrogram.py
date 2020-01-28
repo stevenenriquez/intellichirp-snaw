@@ -123,6 +123,6 @@ def runScript():
             os.remove("spectrogram/"+file)
 
     except:
-            print('[FAILURE -- Spectrogram 1] File upload unsuccessful, or not file uploaded. Choosing default audio file instead.')
+            print('[FAILURE -- Spectrogram 1] File upload unsuccessful, or not file uploaded.')
 
     return listOfImages
