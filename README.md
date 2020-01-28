@@ -27,12 +27,12 @@ Our envisioned solution is a user friendly web application for use by any resear
 Here are a couple screenshots from our demo.
 
 ### Uploading audio for analysis
-![Demo 1](https://https://github.com/stevenenriquez/intellichirp-snaw/tree/master/snaw-frontend/techDemo1.png)
+![Demo 1](https://https://github.com/stevenenriquez/intellichirp-snaw/tree/master/snaw-frontend/readme_images/techDemo1.png)
 
 ### Visualizing results from analysis
-![Demo 2](https://https://github.com/stevenenriquez/intellichirp-snaw/tree/master/snaw-frontend/techDemo2.png)
-![Demo 3](https://https://github.com/stevenenriquez/intellichirp-snaw/tree/master/snaw-frontend/techDemo3.png)
-![Demo 4](https://https://github.com/stevenenriquez/intellichirp-snaw/tree/master/snaw-frontend/techDemo4.png)
+![Demo 2](https://https://github.com/stevenenriquez/intellichirp-snaw/tree/master/snaw-frontend/readme_images/techDemo2.png)
+![Demo 3](https://https://github.com/stevenenriquez/intellichirp-snaw/tree/master/snaw-frontend/readme_images/techDemo3.png)
+![Demo 4](https://https://github.com/stevenenriquez/intellichirp-snaw/tree/master/snaw-frontend/readme_images/techDemo4.png)
 
 ## Authors
 
