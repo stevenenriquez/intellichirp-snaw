@@ -95,12 +95,15 @@ be deleted.
 '''
 @app.route("/results/classification")
 def classify():
+    print("[WORKING] Flask is making call to classification.py - api.py")
     try:
         result = get_classification()
 
+        print("[WORKING] Removing uploaded files - api.py")
         for file in os.listdir('instance/upload/'):
             os.remove('instance/upload/'+file)
 
+        print("[Success] Classification has been completed - api.py")
         return result
     except Exception as e:
         return str(e)
@@ -119,8 +122,32 @@ be deleted.
 '''
 @app.route("/results/spectro")
 def get_spectro():
+    print("[WORKING] Flask is making call to get_spectrogram.py - api.py")
     try:
         result = get_spectrogram()
+        print("[SUCCESS] Spectrogram images have been created - api.py")
+        return result
+    except Exception as e:
+        return str(e)
+
+'''
+###------------------------------------------------------###
+App Routing: '/results/indices'
+Function: get_indices()
+Caller: Results.js
+###------------------------------------------------------###
+calls the function getAcousticIndices() within acousticIndices.py.
+The function getAcousticIndices() is pulled into api.py as "get_acoustic_indices()."
+After the function finishes operations, the uploaded files will
+be deleted.
+###------------------------------------------------------###
+'''
+@app.route("/results/indices")
+def get_indices():
+    print("[WORKING] Flask is making call to acousticIndices.py - api.py")
+    try:
+        result = get_acoustic_indices()
+        print("[SUCCESS] Calculated acoustic indices - api.py")
         return result
     except Exception as e:
         return str(e)

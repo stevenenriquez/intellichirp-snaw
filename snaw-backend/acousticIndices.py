@@ -674,6 +674,7 @@ def getAcousticIndices():
     # Create file counter
     fileCount = 0
 
+    print("[WORKING] Attempting to run acoustic indices calculator - acousticIndices.py")
     # loop through the files in the directory
     for file in os.listdir("instance/upload/"):
 
@@ -700,11 +701,11 @@ def getAcousticIndices():
         for i in range(len(acoustic_headers)):
             # per indices in the length of the acoustic tags,
             # append dictionary items.
-            singleResultArray.append({"Index": acoustic_headers[i], "Other Name" : acoustic_indices[i]})
+            singleResultArray.append({"index": acoustic_headers[i], "value" : acoustic_indices[i]})
         # append result dictionary to the final results array
+        print("[WORKING] Calculated " + acoustic_headers[i] + " - acousticIndices.py")
         fileDictionary[fileCount] = singleResultArray
         fileCount += 1
 
+    print("[SUCCESS] Calculated acoustic indices - acousticIndices.py")
     return fileDictionary
-
-

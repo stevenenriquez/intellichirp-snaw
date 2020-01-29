@@ -37,55 +37,71 @@ const rows2 = [
   {"class_name" : "Geophony", "seconds" : 14, "percentage" : 45}
 ];
 
+function getTotals(classification_dict) {
+  var total  = 0;
+  classification_dict.map( s => (
+      s.category !== 'NO' ? total += 1 : console.log("")
+  ));
+  return total;
+}
+
 export default function SimpleTable(props) {
   const classes = useStyles();
 
+  var anthro_total = getTotals( props.series[0].data );
+  var bio_total = getTotals( props.series[1].data );
+  var geo_total = getTotals( props.series[2].data );
+
+  var total_secs = anthro_total + bio_total + geo_total;
+
+  var table_data = [
+    { name : 'Anthrophony', value : anthro_total, percent : ((anthro_total / total_secs)*100) },
+    { name : 'Biophony', value : bio_total, percent : ((bio_total / total_secs)*100) },
+    { name : 'Geophony', value : geo_total, percent : ((geo_total / total_secs)*100) }
+  ];
+
   return (
     <Paper className={classes.root}>
-        <Typography>{props.testing[0].name}</Typography>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Classification Type</TableCell>
-            <TableCell align="right">Number of Seconds</TableCell>
-            <TableCell align="right">Percentage (%)</TableCell>
+            <TableCell><Typography variant="h6">Classification Type</Typography></TableCell>
+            <TableCell align="right"><Typography variant="h6">Seconds</Typography></TableCell>
+            <TableCell align="right"><Typography variant="h6">Percentage (%)</Typography></TableCell>
       </TableRow>
         </TableHead>
         <TableBody>
           {/* map function on rows list,
               for each row create a result in the table */}
-          {rows2.map(row => (
-            <TableRow key={row.class_name}>
+          {table_data.map(row => (
+            <TableRow key={row.name}>
               <TableCell component="th" scope="row">
-                {row.class_name}
+                {row.name}
               </TableCell>
-              <TableCell align="right">{row.seconds}</TableCell>
-              <TableCell align="right">{row.percentage}</TableCell>
+              <TableCell align="right">{row.value}</TableCell>
+              <TableCell align="right">{row.percent}</TableCell>
               </TableRow>
           ))}
         </TableBody>
       </Table>
+      <br/>
+      <br/>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Model Type</TableCell>
-            <TableCell align="right">Model Color</TableCell>
-            <TableCell align="right">Model Color</TableCell>
+            <TableCell><Typography variant="h6">Index Name</Typography></TableCell>
+            <TableCell align="right"><Typography variant="h6">Value</Typography></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {/* map function on rows list,
-              for each row create a result in the table */}
-          {props.testing.map(row => (
-              <TableRow key={row.name}>
+          {props.indices.map(row => (
+              <TableRow key={row.index}>
                 <TableCell component="th" scope="row">
-                  {row.name}
+                  {row.index}
                 </TableCell>
-                <TableCell align="right">{row.color}</TableCell>
-                <TableCell align="right">{row.color}</TableCell>
+                <TableCell align="right">{row.value}</TableCell>
               </TableRow>
           ))}
-
         </TableBody>
       </Table>
     </Paper>

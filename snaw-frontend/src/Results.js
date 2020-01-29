@@ -115,6 +115,30 @@ function get_class(){
     return result
 }
 
+/* Func: get_class()
+   When the function is called, an ajax call is made to /results/classification
+   flask function returns a JSON string featuring a dictionary of time stamps and classification
+   based on the audio file uploaded
+   spectro_load set to true, allows function to only be loaded on results.js creation, not update
+   ajax response is returned to the function
+*/
+function get_indices(){
+    var result = '';
+    $.ajax({
+        url: '/results/indices',
+        type: 'GET',
+        async: false,
+        success: function(response){
+            //console.log(response);
+            result = response;
+        },
+        error: function(error){
+            console.log(error);
+        },
+    });
+    return result
+}
+
 /* func: downloadTxtFile
    creates a txt file with a classification result when export button is pressed
    TODO:: Pretty print classification results in the returned export file Issue #13
@@ -153,6 +177,7 @@ if(fileInserted() == "True") {
     var finalInfoDictionary
     // Run spectrogram conversion
     var spectroImg = get_spectro();
+    var indices = get_indices();
     var classification = get_class();
 
     finalInfoDictionary = spectroImg;
@@ -218,7 +243,7 @@ function Results() {
                                             </Grid>
                                         </Grid>
                                         <br/>
-                                        <SimpleTable testing={classification[0]}/>
+                                        <SimpleTable series={value[2]} indices={indices[0]}/>
                                         <br/>
                                         <Paper>
                                             <Button onClick={function () {
@@ -234,6 +259,5 @@ function Results() {
         </div>
             )
         }
-
 
 export default Results;
