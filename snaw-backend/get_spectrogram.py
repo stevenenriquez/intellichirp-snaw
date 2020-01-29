@@ -62,8 +62,8 @@ def plotstft(audiopath, binsize=2**10, plotpath=None, colormap="jet"):
 
     timebins, freqbins = np.shape(ims)
 
-    print("timebins: ", timebins)
-    print("freqbins: ", freqbins)
+    #print("timebins: ", timebins)
+    #print("freqbins: ", freqbins)
 
     plt.figure(figsize=(15, 7.5))
     plt.imshow(np.transpose(ims), origin="lower", aspect="auto", cmap=colormap, interpolation="none")
@@ -89,11 +89,11 @@ def plotstft(audiopath, binsize=2**10, plotpath=None, colormap="jet"):
     return ims
 
 def runScript():
+    print("[WORKING] Attempting to run spectrogram calculator - get_spectrogram.py")
 
     # If spectrogram folder has not been created.
     if (os.path.isdir('Spectrogram/') == False):
         os.mkdir('Spectrogram/')
-
 
     # Create a dictionary for storying
     # And a counter for the files
@@ -108,6 +108,7 @@ def runScript():
             path= "spectrogram/SpectroedImage"+ str(fileCount)
 
             # Run spectrogram plotting
+            print("[WORKING] Attemping to run spectrogram plotting - get_spectrogram.py")
             ims = plotstft(audiofile, plotpath=path)
 
             # Convert spectrograms into a base64 string to be sent to front end
@@ -123,6 +124,7 @@ def runScript():
             os.remove("spectrogram/"+file)
 
     except:
-            print('[FAILURE -- Spectrogram 1] File upload unsuccessful, or not file uploaded.')
+            print('[FAILURE -- Spectrogram] File upload unsuccessful, or no file uploaded.')
 
+    print("[SUCCESS] Spectrogram Images created - get_spectrogram.py")
     return listOfImages

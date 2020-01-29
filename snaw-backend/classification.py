@@ -19,17 +19,17 @@ def classify_file( audiofile, model, model_type, model_color ):
     # only used for console output, can be removed to speed up runtime
     #   function will throw error because of true flag at end,
     #   console log is still displayed in spite of
-    try:
-        aS.mtFileClassification(audiofile, model,"svm", True)
-    except TypeError:
-        print("TypeError")
+    #try:
+    #    aS.mtFileClassification(audiofile, model,"svm", True)
+    #except TypeError:
+    #    print("TypeError")
 
     # pulls all the data given from the classification function
     [flagsInd, classesAll, acc, CM] = aS.mtFileClassification(audiofile, model,"svm")
-    print( flagsInd )
-    print( classesAll )
-    print( acc )
-    print( CM )
+    # print( flagsInd )
+    # print( classesAll )
+    # print( acc )
+    # print( CM )
 
     flag_len = len(flagsInd) # amount of segments made
     segment = duration / flag_len # length of each time segment
@@ -49,7 +49,7 @@ def classify_file( audiofile, model, model_type, model_color ):
         classify_dict['data'].append(  { "category" : classesAll[int(flagsInd[index])],
                                          "time" : timestamp } )
         # used for console logging
-        print( str( "{ category: '" + classesAll[int(flagsInd[index])] ) + "', time: " + str(timestamp) + " }," )
+        # print( str( "{ category: '" + classesAll[int(flagsInd[index])] ) + "', time: " + str(timestamp) + " }," )
 
     return classify_dict
 
@@ -71,6 +71,7 @@ def geo_model():
 # driver function
 def runScript():
 
+    print("[WORKING] Attempting to run classification calculator - classification.py")
     # Create dictionary for storing return information
     # Create a counter for files
     finalResult = {}
@@ -83,8 +84,11 @@ def runScript():
 
             # Create list to store information
             result = []
+            print("[WORKING] Attempting to run anthrophony classification - classification.py")
             result.append( classify_file( audiofile, anthro_model(), 'Anthrophony', '#0088FE' ) )
+            print("[WORKING] Attempting to run geophony classification - classification.py")
             result.append( classify_file(audiofile, bio_model(), 'Biophony', '#00C49F' ) )
+            print("[WORKING] Attempting to run biophony classification - classification.py")
             result.append( classify_file(audiofile, geo_model(), 'Geophony', '#FFBB28' ) )
 
             # Add result list to finalResult dictionary with filecounter as the key
@@ -95,5 +99,5 @@ def runScript():
     except:
         print('[FAILURE  -- Classification 1] File upload unsuccessful, or not file uploaded.')
 
-
+    print("[SUCCESS] Classification was successful - classification.py")
     return finalResult
