@@ -700,7 +700,7 @@ def getAcousticIndices():
         for i in range(len(acoustic_headers)):
             # per indices in the length of the acoustic tags,
             # append dictionary items.
-            singleResultArray.append({"Index": acoustic_headers[i], "Other Name" : acoustic_indices[i]})
+            singleResultArray.append({"index": acoustic_headers[i], "value" : acoustic_indices[i]})
         # append result dictionary to the final results array
         fileDictionary[fileCount] = singleResultArray
         fileCount += 1

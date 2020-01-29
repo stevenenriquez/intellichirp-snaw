@@ -125,5 +125,25 @@ def get_spectro():
     except Exception as e:
         return str(e)
 
+'''
+###------------------------------------------------------###
+App Routing: '/results/indices'
+Function: get_indices()
+Caller: Results.js
+###------------------------------------------------------###
+calls the function getAcousticIndices() within acousticIndices.py.
+The function getAcousticIndices() is pulled into api.py as "get_acoustic_indices()."
+After the function finishes operations, the uploaded files will
+be deleted.
+###------------------------------------------------------###
+'''
+@app.route("/results/indices")
+def get_indices():
+    try:
+        result = get_acoustic_indices()
+        return result
+    except Exception as e:
+        return str(e)
+
 print('Starting Flask!')
 app.run(debug=True)
