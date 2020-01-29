@@ -38,9 +38,33 @@ const rows2 = [
 ];
 
 function getTotals(classification_dict) {
-  var total  = 0;
+  var anthro_total = 0;
+  var bio_total = 0;
+  var geo_total = 0;
+  var non_total = 0;
+  for(var i=0; i < classification_dict[0].data.length; i++) {
+    if(classification_dict[0].data[i].category === "NO" &&
+        classification_dict[1].data[i].category === "NO" &&
+        classification_dict[2].data[i].category === "NO" ) {
+      non_total += 1
+    }
+    else if(classification_dict[0].data[i].category !== "NO") {
+      anthro_total += 1
+    }
+    if(classification_dict[1].data[i].category !== "NO") {
+      bio_total += 1
+    }
+    if(classification_dict[2].data[i].category !== "NO") {
+      geo_total += 1
+    }
+  }
+  return [anthro_total, bio_total, geo_total, non_total]
+}
+
+function getTotalSecs(classification_dict) {
+  var total = 0;
   classification_dict.map( s => (
-      s.category !== 'NO' ? total += 1 : console.log("")
+      total += 1
   ));
   return total;
 }
@@ -48,16 +72,29 @@ function getTotals(classification_dict) {
 export default function SimpleTable(props) {
   const classes = useStyles();
 
-  var anthro_total = getTotals( props.series[0].data );
-  var bio_total = getTotals( props.series[1].data );
-  var geo_total = getTotals( props.series[2].data );
+  //var anthro_total = getTotals( props.series[0].data ); // Total number of ant classes with non NO categ
+  //var bio_total = getTotals( props.series[1].data ); // Total number of bio classes with non NO categ
+  //var geo_total = getTotals( props.series[2].data ); // Total number of geo classes with non No categ
 
-  var total_secs = anthro_total + bio_total + geo_total;
+  // eslint-disable-next-line no-undef
+  var totals = getTotals( props.series );
+  var anthro_total = totals[0];
+  var bio_total = totals[1];
+  var geo_total = totals[2];
+  var none_total = totals[3];
 
+  var total_secs = getTotalSecs( props.series[0].data ); // Total number of seconds the audio file is
+
+  // adding data to the table
   var table_data = [
-    { name : 'Anthrophony', value : anthro_total, percent : ((anthro_total / total_secs)*100) },
-    { name : 'Biophony', value : bio_total, percent : ((bio_total / total_secs)*100) },
-    { name : 'Geophony', value : geo_total, percent : ((geo_total / total_secs)*100) }
+    { name : 'Anthrophony', value : anthro_total.toString() + "s",
+      percent : (Math.floor((anthro_total / total_secs)*100)).toString() + "%" },
+    { name : 'Biophony', value : bio_total.toString() + "s",
+      percent : (Math.floor((bio_total / total_secs)*100)).toString() + "%" },
+    { name : 'Geophony', value : geo_total.toString() + "s",
+      percent : (Math.floor((geo_total / total_secs)*100)).toString() + "%" },
+    { name: 'None', value : none_total.toString() + "s",
+      percent : (Math.floor((none_total / total_secs)*100)).toString() + "%"}
   ];
 
   return (
@@ -84,8 +121,6 @@ export default function SimpleTable(props) {
           ))}
         </TableBody>
       </Table>
-      <br/>
-      <br/>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
