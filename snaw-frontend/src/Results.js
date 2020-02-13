@@ -16,6 +16,9 @@ import Grid from '@material-ui/core/Grid';
 import $ from 'jquery';
 import Button from "@material-ui/core/Button";
 
+//Surely a better way to do this other than global variable.
+var finalInfoDictionary;
+
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
@@ -158,6 +161,7 @@ function downloadTxtFile(fileNumber){
     let fileName = 0;
     let fileSpectro = 1;
     let fileData = 2;
+    let fileAcoustics = 3;
 
     const file = new Blob([JSON.stringify(finalInfoDictionary[fileNumber][fileData])], {type: 'text/plain'});
     element.href = URL.createObjectURL(file);
@@ -171,31 +175,37 @@ function downloadTxtFile(fileNumber){
  * which will tell us if there are files present, if not
  * the get_spectro and get_class will not run
  */
-if(fileInserted() == "True") {
+function runAnalysis() {
 
-    // Create a final dictionary to store all information about each file
-    var finalInfoDictionary
-    // Run spectrogram conversion
-    var spectroImg = get_spectro();
-    var indices = get_indices();
-    var classification = get_class();
+        // Create a final dictionary to store all information about each file
+        var resultDictionary;
+        // Run spectrogram conversion
+        var spectroImg = get_spectro();
+        var indices = get_indices();
+        var classification = get_class();
 
-    finalInfoDictionary = spectroImg;
-    // Run classification function. returns dictionary. Will delete all upload files upon completion
+        resultDictionary = spectroImg;
+        // Run classification function. returns dictionary. Will delete all upload files upon completion
 
 
-    //Put everything together into one dictionary for dynamic adding.
-    for(var i = 0; i < Object.keys(spectroImg).length; i++){
-        finalInfoDictionary[i].push(classification[i]);
-    }
-    console.log(finalInfoDictionary);
+        //Put everything together into one dictionary for dynamic adding.
+        for (var i = 0; i < Object.keys(spectroImg).length; i++) {
+            resultDictionary[i].push(classification[i]);
+            resultDictionary[i].push(indices[i])
+        }
+        console.log(resultDictionary);
+        return resultDictionary;
 }
 
 
 
 function Results() {
+    console.log(finalInfoDictionary);
+    if(fileInserted() == "True") {
+        finalInfoDictionary = runAnalysis();
+    }
     const classes = useStyles();
-    const [expanded, setExpanded] = React.useState(false);
+    const [expanded, setExpanded] = React.useState(false);;
 
     const handleChange = panel => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
@@ -213,7 +223,6 @@ function Results() {
                 <br/>
                 <Container fixed>
                     {Object.entries(finalInfoDictionary).map(([key, value]) => {
-                        console.log(key);
                         return (
                             <ExpansionPanel expanded={expanded === key} onChange={handleChange(key)}>
                                 <ExpansionPanelSummary
@@ -243,7 +252,7 @@ function Results() {
                                             </Grid>
                                         </Grid>
                                         <br/>
-                                        <SimpleTable series={value[2]} indices={indices[0]}/>
+                                        <SimpleTable series={value[2]} indices={value[3]}/>
                                         <br/>
                                         <Paper>
                                             <Button onClick={function () {
