@@ -31,7 +31,7 @@ class App extends React.Component {
             <b>Soundscape Noise Analysis Workbench</b>
           </p>
           <br/>
-          <form action="http://localhost:5000/uploader" method="POST"
+          <form action="/uploader" method="POST"
                 encType="multipart/form-data">
             {/*<InputLabel htmlFor="my-input">Upload File</InputLabel>*/}
             <label htmlFor='my-input'><Button variant="outlined" color='#3f5a14' component='span'>Upload Audio
@@ -46,7 +46,7 @@ class App extends React.Component {
             <Input id='my-submit' type='submit' style={{display: 'none'}}/>
           </form>
           <br/>
-          <AnalyzeButton/>
+            <AnalyzeButton/>
         </header>
       </div>
     );
