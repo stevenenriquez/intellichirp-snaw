@@ -95,7 +95,6 @@ def runScript():
             finalResult[fileCount] = result
             fileCount += 1
 
-
     except:
         print('[FAILURE  -- Classification 1] File upload unsuccessful, or not file uploaded.')
 
