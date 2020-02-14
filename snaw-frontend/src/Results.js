@@ -17,6 +17,12 @@ import $ from 'jquery';
 import Button from "@material-ui/core/Button";
 
 //Surely a better way to do this other than global variable.
+/* This is currently done to ensure that the panels are accessible after
+ * the analysis completes. Without it, all the panels disappear after
+ * clicking on one of them.
+ * The change was made through removing the open statements which were constantly running
+ * the scripts. Now the scripts will only run upon clicking the analysis button.
+ */
 var finalInfoDictionary;
 
 const useStyles = makeStyles(theme => ({
@@ -197,12 +203,17 @@ function runAnalysis() {
         return resultDictionary;
 }
 
-
+//setter function for the global dictionary. Safety i guess?
+function setGlblDictionary(dicitonary){
+    finalInfoDictionary = dicitonary;
+}
 
 function Results() {
     console.log(finalInfoDictionary);
+    //Check if files are currently inserted into the filesystem
     if(fileInserted() == "True") {
-        finalInfoDictionary = runAnalysis();
+        //Set global var: finalInfoDictionary to the results of the analysis
+        setGlblDictionary(runAnalysis());
     }
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);;
