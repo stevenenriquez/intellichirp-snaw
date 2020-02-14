@@ -210,9 +210,6 @@ function Results() {
     const handleChange = panel => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
-
-
-
     return (
         <div className="App">
 
