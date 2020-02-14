@@ -56,10 +56,16 @@ def plotstft(audiopath, binsize=2**10, plotpath=None, colormap="jet"):
     dict_data=get_result()
     print(dict_data)
     geo_output_dict=dict_data[0][1]['data']
+    print("hello")
 
+    size = len(geo_output_dict)
     x_labels = []
-    for row in geo_output_dict :
-        x_labels.append(row['category'])
+    x_cats = []
+    tempCat = ""
+    for index, row in enumerate(geo_output_dict) :
+        tempCat = row['category']
+        if(len(x_cats) > 0 and x_cats[-1] == tempCat) : x_labels.append(""), x_cats.append(tempCat)
+        else : x_labels.append(tempCat), x_cats.append(tempCat)
     print(x_labels)
 
     samplerate, samples = wav.read(audiopath)
@@ -86,14 +92,14 @@ def plotstft(audiopath, binsize=2**10, plotpath=None, colormap="jet"):
     x_size = int(timebins / seconds)
 
     xlocs = np.float32(np.linspace(0, timebins-1, seconds))
-    plt.xticks(xlocs, x_labels, rotation=90)
+    plt.xticks(xlocs, x_labels, rotation=45)
     ylocs = np.int16(np.round(np.linspace(0, freqbins-1, 10)))
     plt.yticks(ylocs, ["%.02f" % freq[i] for i in ylocs])
 
     index = 0
     annotate_size = 1/seconds
 
-    for x, cat in zip(xlocs, x_labels):
+    for x, cat in zip(xlocs, x_cats):
         if(cat != 'NO') :
             plt.fill([x,x+x_size,x+x_size,x], [0,0,freqbins,freqbins], 'b', alpha=0.2)
         index += 1
