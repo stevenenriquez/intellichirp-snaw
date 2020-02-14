@@ -21,11 +21,18 @@ app.config['SESSION_TYPE'] = 'filesystem'
 App Routing: '/'
 Function: home()
 ###------------------------------------------------------###
-just renders the index.html file for react.
+renders the index.html along with making sure that the upload
+folder is completely empty. This is done to ensure that
+no one uploads->refreshes page. Doing so deactivates the
+analyze button, so we will assume that users will NOT
+hit refresh upon uploading a file.
 ###------------------------------------------------------###
 '''
 @app.route('/')
 def home():
+
+    for file in os.listdir('instance/upload/'):
+            os.remove('instance/upload/'+file)
     return render_template("index.html")
 
 
