@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import $ from "jquery";
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -24,7 +25,7 @@ export default function UploadButton() {
     <div>
         <label htmlFor="outlined-button-file">
         <Link to="/results" style={{ textDecoration: 'none' }}>
-          <Button variant="contained" className={classes.button}>
+          <Button variant="contained"  className={classes.button}>
             Analyze Audio
           </Button>
           </Link>

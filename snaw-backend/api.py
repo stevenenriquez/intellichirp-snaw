@@ -55,7 +55,7 @@ def upload_file():
             # Follow the same procedure as uploading singular files.
             filename = secure_filename(f.filename)
             f.save(os.path.join(UPLOAD_FOLDER, filename))
-        return redirect('http://127.0.0.1:5000')
+        return redirect('', 204)
 
 
 '''
@@ -69,7 +69,7 @@ within in. returns a string 'True' or 'False' depending on the
 condition.
 ###------------------------------------------------------###
 '''
-@app.route('/didUpload', methods = ['GET'])
+@app.route('/didUpload')
 def didFileUpload():
      # Create 'instance/upload/' folder if not present
     if(os.path.isdir('instance/upload/') == False):
