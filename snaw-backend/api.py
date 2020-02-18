@@ -21,11 +21,18 @@ app.config['SESSION_TYPE'] = 'filesystem'
 App Routing: '/'
 Function: home()
 ###------------------------------------------------------###
-just renders the index.html file for react.
+renders the index.html along with making sure that the upload
+folder is completely empty. This is done to ensure that
+no one uploads->refreshes page. Doing so deactivates the
+analyze button, so we will assume that users will NOT
+hit refresh upon uploading a file.
 ###------------------------------------------------------###
 '''
 @app.route('/')
 def home():
+
+    for file in os.listdir('instance/upload/'):
+            os.remove('instance/upload/'+file)
     return render_template("index.html")
 
 
@@ -55,7 +62,7 @@ def upload_file():
             # Follow the same procedure as uploading singular files.
             filename = secure_filename(f.filename)
             f.save(os.path.join(UPLOAD_FOLDER, filename))
-        return redirect('http://127.0.0.1:5000')
+        return redirect('', 204)
 
 
 '''
@@ -69,7 +76,7 @@ within in. returns a string 'True' or 'False' depending on the
 condition.
 ###------------------------------------------------------###
 '''
-@app.route('/didUpload', methods = ['GET'])
+@app.route('/didUpload')
 def didFileUpload():
      # Create 'instance/upload/' folder if not present
     if(os.path.isdir('instance/upload/') == False):

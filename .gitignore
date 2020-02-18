@@ -2,3 +2,9 @@
 /snaw-frontend/config/
 /snaw-frontend/node_modules/
 /snaw-frontend/scripts/
+/snaw-backend/static/react/js/
+/snaw-backend/static/react/css/
+/snaw-backend/static/react/asset-manifest.json
+/snaw-backend/static/react/service-worker.js
+/snaw-backend/templates/
+/snaw-backend/static/react/
