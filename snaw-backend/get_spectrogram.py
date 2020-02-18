@@ -92,7 +92,7 @@ def plotstft(audiopath, binsize=2**10, plotpath=None, colormap="jet"):
     x_size = int(timebins / seconds)
 
     xlocs = np.float32(np.linspace(0, timebins-1, seconds))
-    plt.xticks(xlocs, x_labels, rotation=45)
+    plt.xticks(xlocs, x_labels, rotation=75)
     ylocs = np.int16(np.round(np.linspace(0, freqbins-1, 10)))
     plt.yticks(ylocs, ["%.02f" % freq[i] for i in ylocs])
 
