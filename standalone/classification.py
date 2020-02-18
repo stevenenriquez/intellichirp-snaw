@@ -78,28 +78,30 @@ def runScript():
     finalResult = {}
     fileCount = 0
     filePath = get_path()
+    filename = 'test.wav'
 
     try:
         # Retrieve File
-        for filename in os.listdir(filePath):
-            audiofile = filePath + filename
+        #for filename in os.listdir(filePath):
+        audiofile = "example/test.wav"
 
-            # Create list to store information
-            result = []
-            print("[WORKING] Attempting to run anthrophony classification - classification.py")
-            result.append( classify_file( audiofile, anthro_model(), 'Anthrophony', '#0088FE' ) )
-            print("[WORKING] Attempting to run geophony classification - classification.py")
-            result.append( classify_file(audiofile, bio_model(), 'Biophony', '#00C49F' ) )
-            print("[WORKING] Attempting to run biophony classification - classification.py")
-            result.append( classify_file(audiofile, geo_model(), 'Geophony', '#FFBB28' ) )
+        # Create list to store information
+        result = []
+        print("[WORKING] Attempting to run anthrophony classification - classification.py")
+        result.append( classify_file( audiofile, anthro_model(), 'Anthrophony', '#0088FE' ) )
+        print("[WORKING] Attempting to run geophony classification - classification.py")
+        result.append( classify_file(audiofile, bio_model(), 'Biophony', '#00C49F' ) )
+        print("[WORKING] Attempting to run biophony classification - classification.py")
+        result.append( classify_file(audiofile, geo_model(), 'Geophony', '#FFBB28' ) )
 
-            # Add result list to finalResult dictionary with filecounter as the key
-            finalResult[fileCount] = result
-            fileCount += 1
+        # Add result list to finalResult dictionary with filecounter as the key
+        finalResult[fileCount] = result
+        fileCount += 1
+
+        print("[SUCCESS] Classification was successful - classification.py")
 
 
     except:
         print('[FAILURE  -- Classification 1] File upload unsuccessful, or not file uploaded.')
 
-    print("[SUCCESS] Classification was successful - classification.py")
     return finalResult
