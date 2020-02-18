@@ -18,11 +18,7 @@ class App extends React.Component {
   fileSelectedHandler = event => {
     //event.preventDefault();
     this.state.selectedFile = Array.from(event.target.files)
-    {console.log(this.state.selectedFile)}
-    {this.state.selectedFile.map(function(file, i) {
-      console.log(file.name)
-      return <li key={i}>Test</li>
-      })}
+    this.setState(this.state.selectedFile)
   };
 
   render() {
@@ -38,21 +34,21 @@ class App extends React.Component {
           <br/>
           <form action="http://localhost:5000/uploader" method="POST"
                 encType="multipart/form-data">
-            {/*<InputLabel htmlFor="my-input">Upload File</InputLabel>*/}
             <label htmlFor='my-input'><Button variant="outlined" color='#3f5a14' component='span'>Upload Audio
               File</Button></label>
             <input id="my-input" aria-describedby="my-helper-text" type='file' multiple={true} onChange={this.fileSelectedHandler} name='file' style={{display: 'none'}}/>
             <FormHelperText id="my-helper-text">
-                Drag and drop WAV files here, or click the Upload button to select file/s.
+                Click the Upload button to select files. <br/><br/> Selected Files: <br/><br/>
+                {this.state.selectedFile.map(function(file, index) {
+                  return <li key={index}>{file.name}</li>
+                })}
+                <br/>
             </FormHelperText>
 
             <label htmlFor='my-submit'><Button variant="contained" backgroundColor='#3f5a14'
                                                component='span'>Submit</Button></label>
             <Input id='my-submit' type='submit' style={{display: 'none'}}/>
           </form>
-          <div>
-            <ul></ul>
-          </div>
           <br/>
           <AnalyzeButton/>
         </header>
