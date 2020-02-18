@@ -1,6 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -25,7 +25,9 @@ export default function UploadButton() {
             type="file"
         />
         <label htmlFor="outlined-button-file">
-            <Button variant="outlined" component="span" className={classes.button}>
+            <Button variant="outlined" 
+                    component="span" 
+                    className={classes.button}>
               Upload WAV File/s
             </Button>
         </label>
