@@ -102,6 +102,6 @@ def runScript():
 
 
     except:
-        print('[FAILURE  -- Classification 1] File upload unsuccessful, or not file uploaded.')
+        print('[FAILURE  -- Classification 1] File read unsuccessful, or not file read.')
 
     return finalResult
