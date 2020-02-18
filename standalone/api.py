@@ -66,16 +66,6 @@ def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
-def upload_file():
-    mutableList = request.files.copy()
-
-    # iterate over a list received from getlist() method provided in mutableList's methodss
-    for f in mutableList.getlist('file'):
-        # Follow the same procedure as uploading singular files.
-        filename = secure_filename(f.filename)
-        f.save(os.path.join(UPLOAD_FOLDER, filename))
-
 '''
 ###------------------------------------------------------###
 Checks to see if the folder filePath has any contents
@@ -101,7 +91,7 @@ be deleted.
 '''
 
 def classify():
-    print("[WORKING] Flask is making call to classification.py - api.py")
+    print("[WORKING] Connecting to classification.py - api.py")
     try:
         result = classification.runScript()
 
