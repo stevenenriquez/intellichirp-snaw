@@ -19,11 +19,8 @@ class App extends React.Component {
     //event.preventDefault();
     this.state.selectedFile = Array.from(event.target.files)
     {console.log(this.state.selectedFile)}
-  };
-
-  updateFileList = (this.state.selectedFile) => {
     {this.state.selectedFile.map(function(file, i) {
-      console.log('test')
+      console.log(file.name)
       return <li key={i}>Test</li>
       })}
   };
@@ -54,10 +51,7 @@ class App extends React.Component {
             <Input id='my-submit' type='submit' style={{display: 'none'}}/>
           </form>
           <div>
-            {this.state.selectedFile.map(function(file, i) {
-            console.log('test')
-            return <li key={i}>Test</li>
-            })}
+            <ul></ul>
           </div>
           <br/>
           <AnalyzeButton/>
