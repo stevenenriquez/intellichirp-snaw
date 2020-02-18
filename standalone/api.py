@@ -4,7 +4,7 @@ import sys, getopt
 import subprocess
 from get_spectrogram import runScript as get_spectrogram
 from acousticIndices import getAcousticIndices as get_acoustic_indices
-from output import main as output
+from output import result as output
 
 ALLOWED_EXTENSIONS = {'wav'}
 
