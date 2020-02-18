@@ -2,47 +2,64 @@ from werkzeug.utils import secure_filename
 import os
 import sys, getopt
 import subprocess
-from get_spectrogram import runScript as get_spectrogram
-from acousticIndices import getAcousticIndices as get_acoustic_indices
-from output import result as output
+import yaml
+from scipy import signal
+import csv
+import classification
 
 ALLOWED_EXTENSIONS = {'wav'}
 
-app = Flask("__main__")
-app.config["DEBUG"] = True
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.secret_key = 'secret key'
-app.config['SESSION_TYPE'] = 'filesystem'
 
 filePath = ''
 
-def main(argv):
-    global filePath
-    try:
-        opts, args = getopt.getopt(argv,"hi:o:",["filepath="])
-    except getopt.GetoptError:
-        print ('api.py -i <filePath>')
-        sys.exit(2)
-    for opt, arg in opts:
-        if opt == '-help':
-            print ('Usage: api.py -i <filePath>')
-            sys.exit()
-        elif opt in ("-i", "--filepath"):
-            filePath = arg
-    print ('Your audio file path:', filePath)
 
-    UPLOAD_FOLDER = filePath
-    
-    classify()
-    
-    output()
+def output():
+    Anthro_csv_file = "csv/Anthro.csv"
+    Geo_csv_file = "csv/Geo.csv"
+    Bio_csv_file = "csv/Bio.csv"
+
+    csv_columns=['category','time']
+
+    dict_data=classification.runScript()
+
+    Anthro_output_dict=dict_data[0]["data"]
+    Geo_output_dict=dict_data[1]["data"]
+    Bio_output_dict=dict_data[2]["data"]
+
+
+    # Output anthrophony csv file
+    try:
+        with open(Anthro_csv_file, 'w') as csvfile_a:
+            writer = csv.DictWriter(csvfile_a, fieldnames=csv_columns)
+            writer.writeheader()
+            for data in Anthro_output_dict:
+                writer.writerow(data)
+    except IOError:
+        print("I/O error")
+
+    # Output geophony csv file
+    try:
+        with open(Geo_csv_file, 'w') as csvfile_g:
+            writer = csv.DictWriter(csvfile_g, fieldnames=csv_columns)
+            writer.writeheader()
+            for data in Geo_output_dict:
+                writer.writerow(data)
+    except IOError:
+        print("I/O error")
+
+    # Output biophony csv file
+    try:
+        with open(Bio_csv_file, 'w') as csvfile_b:
+            writer = csv.DictWriter(csvfile_b, fieldnames=csv_columns)
+            writer.writeheader()
+            for data in Bio_output_dict:
+                writer.writerow(data)
+    except IOError:
+        print("I/O error")
+
     
 def path():
     return filePath
-    
-
-if __name__ == "__main__":
-    main(sys.argv[1:])
 
 
 def allowed_file(filename):
@@ -86,46 +103,34 @@ be deleted.
 def classify():
     print("[WORKING] Flask is making call to classification.py - api.py")
     try:
-        result = get_classification()
+        result = classification.runScript()
 
         print("[Success] Classification has been completed - api.py")
         return result
     except Exception as e:
         return str(e)
 
-'''
-###------------------------------------------------------###
-calls the function runScript() within get_spectrogram.py.
-The function runScript() is pulled into api.py as "get_spectrogram()."
-After the function finishes operations, the uploaded files will
-be deleted.
-###------------------------------------------------------###
-'''
-def get_spectro():
-    print("[WORKING] Flask is making call to get_spectrogram.py - api.py")
-    try:
-        result = get_spectrogram()
-        print("[SUCCESS] Spectrogram images have been created - api.py")
-        return result
-    except Exception as e:
-        return str(e)
 
-'''
-###------------------------------------------------------###
-calls the function getAcousticIndices() within acousticIndices.py.
-The function getAcousticIndices() is pulled into api.py as "get_acoustic_indices()."
-After the function finishes operations, the uploaded files will
-be deleted.
-###------------------------------------------------------###
-'''
-def get_indices():
-    print("[WORKING] Flask is making call to acousticIndices.py - api.py")
+def main(argv):
+    global filePath
     try:
-        result = get_acoustic_indices()
-        print("[SUCCESS] Calculated acoustic indices - api.py")
-        return result
-    except Exception as e:
-        return str(e)
+        opts, args = getopt.getopt(argv,"hi:o:",["filepath="])
+    except getopt.GetoptError:
+        print ('api.py -i <filePath>')
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-help':
+            print ('Usage: api.py -i <filePath>')
+            sys.exit()
+        elif opt in ("-i", "--filepath"):
+            filePath = arg
+    print ('Your audio file path:', filePath)
 
-print('Starting Flask!')
-app.run(debug=True)
+    UPLOAD_FOLDER = filePath
+    
+    classify()
+
+    output()
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
