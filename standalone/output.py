@@ -3,7 +3,7 @@ from scipy import signal
 import csv
 from classification import runScript as get_result
 
-def main():
+def result():
     Anthro_csv_file = "csv/Anthro.csv"
     Geo_csv_file = "csv/Geo.csv"
     Bio_csv_file = "csv/Bio.csv"
