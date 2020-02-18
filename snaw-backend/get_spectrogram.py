@@ -95,7 +95,7 @@ def runScript():
     if (os.path.isdir('Spectrogram/') == False):
         os.mkdir('Spectrogram/')
 
-    # Create a dictionary for storying
+    # Create a dictionary for storing
     # And a counter for the files
     listOfImages = {}
     fileCount = 0
@@ -115,8 +115,16 @@ def runScript():
             with open(path + ".png", "rb") as spect_image:
                 encode = base64.b64encode(spect_image.read())
                 # Add file number as key and file name and data as values
-                listOfImages[fileCount] = [filename, 'data:image/png;base64,' + encode.decode("utf-8")]
+                spect_image.close()
 
+            '''This is the same as the spectrograms, except it gets the audio
+                Base64'''
+            with open(audiofile, "rb") as wav_audio:
+                wavEncode = base64.b64encode(wav_audio.read())
+                wav_audio.close()
+
+
+            listOfImages[fileCount] = [filename, 'data:image/png;base64,' + encode.decode("utf-8"), 'data:audio/wav;base64,' + wavEncode.decode("utf-8")]
             fileCount += 1
 
         # remove all spectrogram pictures from storage

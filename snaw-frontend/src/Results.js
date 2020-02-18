@@ -15,9 +15,44 @@ import ApplicationBar from "./components/ApplicationBar";
 import Grid from '@material-ui/core/Grid';
 import $ from 'jquery';
 import Button from "@material-ui/core/Button";
+import ReactAudioPlayer from 'react-audio-player';
+import AudioPlayer from 'react-h5-audio-player';
+import 'react-h5-audio-player/lib/styles.css';
 
 //Surely a better way to do this other than global variable.
+/* This is currently done to ensure that the panels are accessible after
+ * the analysis completes. Without it, all the panels disappear after
+ * clicking on one of them.
+ * The change was made through removing the open statements which were constantly running
+ * the scripts. Now the scripts will only run upon clicking the analysis button.
+ *
+ * TODO: Change Results.js to a class component, and store finalInfoDictionary within the state system.
+ */
 var finalInfoDictionary;
+
+
+/*-------------------------------------------------------------/
+ * Proper values to traverse the finalInfoDictionary[1st][2nd]:
+ *
+ * n-th file - [1st][] - used when referencing the entire dictionary, ex/ finalInfoDictionary[n-th file][OTHER_PARAM] where n-th file is the NUMBER of the file in the entire list of files. Dynamically called by Results().
+ *
+ * fileName - [][2nd] - The name of the file
+ * fileSpectro - [][2nd] - The Base64 of the Spectrogram image
+ * fileAudio - [][2nd] - The Base64 of the audio file
+ * fileData - [][2nd] - The classification.py output of the file
+ * fileAcoustics - [][2nd] - The acousticIndices.py out of the file
+ *-------------------------------------------------------------/
+ * Example of the dictionary structure:  {n-th file: [fileName, fileSpectro, fileAudio, fileData, fileAcoustics]}
+ * Example call of the dictionary:
+ * finalInfoDictionary[0][fileName] - This retrieves the name of the FIRST file in the list of all files
+ *-------------------------------------------------------------*/
+
+let fileName = 0;
+let fileSpectro = 1;
+let fileAudio = 2
+let fileData = 3;
+let fileAcoustics = 4;
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -47,14 +82,15 @@ const useStyles = makeStyles(theme => ({
 
 
 
-/* Function: fileInserted()
- * Functionality:
+/*-----------------------------------------------------/
+ * Function: fileInserted()
+ *-----------------------------------------------------/
  * This function is in place to stop the page from constantly
  * running the classification and spectrogram functions.
  * It does so by checking if any files are actually present, if
  * there are none, the functions will not run. Once those functions
  * do run, the files are deleted.
- */
+ *-----------------------------------------------------*/
 function fileInserted(){
     var result = '';
     $.ajax({
@@ -148,21 +184,10 @@ function get_indices(){
    TODO:: Save classification results to a csv. file Issue #14
  */
 function downloadTxtFile(fileNumber){
+
     const element = document.createElement("a");
 
-    /* Proper values to traverse the finalInfoDictionary:
-     * fileNumber (passed in parameter) =  the number of the file in the dictionary. Dynamically called by Results().
-     * fileName = The name of the file
-     * fileSpectro = The Base64 of the Spectrogram image
-     * fileData =  The classification.py output of the file
-     *
-     * Example of the dictionary:  {fileNumber: [fileName, fileSpectro, fileData]}
-     */
-    let fileName = 0;
-    let fileSpectro = 1;
-    let fileData = 2;
-    let fileAcoustics = 3;
-
+   //Fnd proper finalInfoDictionary traversing at top of file
     const file = new Blob([JSON.stringify(finalInfoDictionary[fileNumber][fileData])], {type: 'text/plain'});
     element.href = URL.createObjectURL(file);
     element.download = "classification_"+finalInfoDictionary[fileNumber][fileName]+"_results.txt";
@@ -184,6 +209,7 @@ function runAnalysis() {
         var indices = get_indices();
         var classification = get_class();
 
+        //TODO: This process needs to be completed in the backend, and then the finished dictionary sent through to front-end
         resultDictionary = spectroImg;
         // Run classification function. returns dictionary. Will delete all upload files upon completion
 
@@ -197,12 +223,17 @@ function runAnalysis() {
         return resultDictionary;
 }
 
-
+//setter function for the global dictionary. Safety i guess?
+function setGlblDictionary(dicitonary){
+    finalInfoDictionary = dicitonary;
+}
 
 function Results() {
     console.log(finalInfoDictionary);
+    //Check if files are currently inserted into the filesystem
     if(fileInserted() == "True") {
-        finalInfoDictionary = runAnalysis();
+        //Set global var: finalInfoDictionary to the results of the analysis
+        setGlblDictionary(runAnalysis());
     }
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);;
@@ -210,9 +241,6 @@ function Results() {
     const handleChange = panel => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
-
-
-
     return (
         <div className="App">
 
@@ -230,29 +258,36 @@ function Results() {
                                     aria-controls="panel1bh-content"
                                     id="panel1bh-header">
                                     <Typography className={classes.heading}>Results of</Typography>
-                                    <Typography className={classes.secondaryHeading}>{value[0]}</Typography>
+                                    <Typography className={classes.secondaryHeading}>{value[fileName]}</Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails>
                                     <Container>
                                         <Paper>
                                             <Typography variant='subtitle1'>Spectrogram</Typography>
-                                            <CardMedia id="spectrogram" component='img' image={value[1]}
+                                            <CardMedia id="spectrogram" component='img' image={value[fileSpectro]}
                                                        className="classes.media"/>
                                         </Paper>
+                                        <br/>
+                                        <Paper>
+                                        <Typography variant='subtitle1'>Playback Audio File</Typography>
+                                        <audio controls src={value[fileAudio]}/>
+                                        </Paper>
+                                        <br/>
+
                                         <br/>
                                         <Typography variant='subtitle1'>Results of SVM Anthrophony, Geophony, and Biophony Class
                                             Models</Typography>
                                         <br/>
                                         <Grid container spacing={2}>
                                             <Grid item linechart>
-                                                <Paper><LineChart series={value[2]}/></Paper>
+                                                <Paper><LineChart series={value[fileData]}/></Paper>
                                             </Grid>
                                             <Grid item piechart>
-                                                <Paper><PieChart series={value[2]}/></Paper>
+                                                <Paper><PieChart series={value[fileData]}/></Paper>
                                             </Grid>
                                         </Grid>
                                         <br/>
-                                        <SimpleTable series={value[2]} indices={value[3]}/>
+                                        <SimpleTable series={value[fileData]} indices={value[fileAcoustics]}/>
                                         <br/>
                                         <Paper>
                                             <Button onClick={function () {
