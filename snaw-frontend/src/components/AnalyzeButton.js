@@ -17,7 +17,15 @@ const useStyles = theme => ({
         },
     },
 });
-
+/*-----------------------------------------------------/
+ * Class: AnalyzeButton
+ *-----------------------------------------------------/
+ * The AnalyzeButton has been converted into a class to
+ * allow the component to be passed arguments. We then use
+ * the passed in bool (in this.props.bool) to determine whether
+ * to show the "Analyze" button in green and enabled vs. grey and
+ * disabled.
+ *-----------------------------------------------------*/
 class AnalyzeButton extends React.Component {
     render() {
         const { classes } = this.props;
