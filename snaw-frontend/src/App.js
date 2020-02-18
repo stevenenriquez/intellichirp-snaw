@@ -22,6 +22,17 @@ class App extends React.Component {
     this.state.fileCount += this.state.selectedFile.length;
   };
 
+  /*-----------------------------------------------------/
+   * Function [Event Handler]: submitHandler
+   *-----------------------------------------------------/
+   * This function handles the "Submit" button on the web app.
+   * The function will check if the current state contains files.
+   * If there are none, then the function will preventDefualting
+   * for the Form, and call a re-render. Once files have been added,
+   * this function will set filesInserted = true, which is sent to the
+   * AnalyzeButton.js The page then force updates, which allows
+   * the "Analyze" button to be shown in green and active.
+   *-----------------------------------------------------*/
  submitHandler = event =>{
      if(this.state.fileCount == 0) {
          event.preventDefault();
@@ -34,7 +45,6 @@ class App extends React.Component {
 
      }
  }
-
   render() {
     return (
       <div className="App">
