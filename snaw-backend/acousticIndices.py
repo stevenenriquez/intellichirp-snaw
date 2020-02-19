@@ -635,7 +635,7 @@ class AcousticIndices(object):
         feature_headers.append("Temporal Entropy")
         feature_headers.append("Spectral Entropy")
         feature_headers.append("Acoustic Entropy")
-        feature_headers.extend(["Antrhophony","Biophony","Normalized Difference Soundscape Index"])
+        feature_headers.extend(["Anthrophony","Biophony","Normalized Difference Soundscape Index"])
         feature_headers.append("Acoustic Complexity Index")
         feature_headers.append("Shannon Index")
         feature_headers.append("Median Of Amplitude Envelope")
